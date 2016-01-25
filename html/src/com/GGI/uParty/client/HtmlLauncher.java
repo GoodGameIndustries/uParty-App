@@ -3,9 +3,10 @@ package com.GGI.uParty.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
+import com.GGI.uParty.Adapter;
 import com.GGI.uParty.uParty;
 
-public class HtmlLauncher extends GwtApplication {
+public class HtmlLauncher extends GwtApplication implements Adapter {
 
         @Override
         public GwtApplicationConfiguration getConfig () {
@@ -14,6 +15,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener getApplicationListener () {
-                return new uParty();
+                return new uParty(this);
         }
 }

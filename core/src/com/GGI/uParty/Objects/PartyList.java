@@ -2,6 +2,7 @@ package com.GGI.uParty.Objects;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import com.GGI.uParty.uParty;
 import com.GGI.uParty.Network.Party;
@@ -52,6 +53,7 @@ public class PartyList extends ArrayList<PartyModule>{
 
 	public void refresh(ArrayList<Party> parties) {
 		this.clear();
+		Date d = new Date();
 		for(int i = 0; i < parties.size();i++){
 			this.add(new PartyModule(u,parties.get(i)));
 		}

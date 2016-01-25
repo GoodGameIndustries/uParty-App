@@ -10,6 +10,7 @@ import com.GGI.uParty.Objects.Keyboard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,10 +37,13 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 	private Rectangle whereB = new Rectangle(w/8,13*h/32,3*w/4,h/8);
 	private Rectangle tSwitchB = new Rectangle(10*w/16,23*h/32,w/8,h/16);
 	private Rectangle createPartyB = new Rectangle(w/8,10*h/32,3*w/4,h/16);
+	private Rectangle backBounds = new Rectangle(h/64,61*h/64,h/32,h/32);
 	
 	private TextButtonStyle buttonStyle;
+	private TextButtonStyle plainButtonStyle;
 	private TextButton createParty;
 	private TextButton tSwitch;
+	private TextButton back;
 	private boolean isPm=false;
 	
 	private TextFieldStyle style;
@@ -103,6 +107,13 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 			tSwitch.setBounds(tSwitchB.x, tSwitchB.y, tSwitchB.width, tSwitchB.height);
 		createParty = new TextButton("Create Event",buttonStyle);
 			createParty.setBounds(createPartyB.x, createPartyB.y, createPartyB.width, createPartyB.height);
+	
+		plainButtonStyle = new TextButtonStyle();
+			plainButtonStyle.font=u.assets.large;
+			plainButtonStyle.fontColor = u.assets.orange;
+			plainButtonStyle.checkedFontColor = Color.GRAY;
+		back = new TextButton("<",plainButtonStyle);
+			back.setBounds(backBounds.x,backBounds.y,backBounds.width,backBounds.height);
 	}
 
 	@Override
@@ -125,6 +136,7 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 		where.draw(pic, 1);
 		tSwitch.draw(pic, 1);
 		createParty.draw(pic,1);
+		back.draw(pic, 1);
 		pic.end();
 		
 		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
@@ -271,6 +283,7 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 		keyBoard.touchDown(touch);
 		if(Intersector.overlaps(touch, tSwitchB)){tSwitch.toggle();}
 		else if(Intersector.overlaps(touch,createPartyB)){createParty.toggle();}
+		else if (Intersector.overlaps(touch, backBounds)){back.toggle();}
 		return true;
 	}
 
@@ -286,6 +299,7 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 		
 	
 		if(Intersector.overlaps(touch, tSwitchB)){tSwitch.toggle();isPm=!isPm;}
+		else if (Intersector.overlaps(touch, backBounds)){back.toggle();u.setScreen(new MainScreen(u));}
 		else if(Intersector.overlaps(touch,createPartyB)){createParty.toggle();
 			if(n.length()>0&&hr.length()>0&&m.length()>0&&d.length()>0&&wr.length()>0){
 				Party p = new Party();
