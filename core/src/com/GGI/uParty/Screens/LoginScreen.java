@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import com.GGI.uParty.uParty;
 import com.GGI.uParty.Network.Forgot;
 import com.GGI.uParty.Network.Login;
+import com.GGI.uParty.Objects.Keyboard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -44,6 +45,8 @@ public class LoginScreen implements Screen,InputProcessor{
 	private Rectangle rememberBounds = new Rectangle(3*w/4,h/3,w/8,h/16);
 	private Rectangle forgotBounds = new Rectangle(w/8,13*h/64,3*w/4,h/32);
 	
+	private Keyboard keyBoard;
+	
 	private TextFieldStyle style;
 	private TextField email;
 	private TextField pass;
@@ -63,6 +66,7 @@ public class LoginScreen implements Screen,InputProcessor{
 	
 	public LoginScreen(uParty u){
 		this.u=u;
+		keyBoard = new Keyboard(u,this);
 		
 		/** Text Field Setup */
 		
@@ -129,6 +133,8 @@ public class LoginScreen implements Screen,InputProcessor{
 	@Override
 	public void render(float delta) {
 		
+		
+		
 		if(u.assets.myProfile!=null){
 			if(u.assets.myProfile.verr){u.setScreen(new MainScreen(u));}
 			else{u.setScreen(new ConfirmationScreen(u));}
@@ -162,6 +168,8 @@ public class LoginScreen implements Screen,InputProcessor{
 		forgot.draw(pic, 1);
 		err.draw(pic, 1);
 		pic.end();
+		
+		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
 		
 	}
 
@@ -198,17 +206,19 @@ public class LoginScreen implements Screen,InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
+		//keyTyped('\n');
+		System.out.println("key up");
+		return true;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
+		System.out.println("Char: " + character);
 		/**email*/
 		if(selected==1){if(character == ''&&e.length()>0){
 			e=e.substring(0, e.length()-1);
@@ -231,6 +241,8 @@ public class LoginScreen implements Screen,InputProcessor{
 		p=p.replaceAll("\\p{Cntrl}","");
 		email.setText(e);
 		pass.setText(p);
+		
+		//Gdx.input.setOnscreenKeyboardVisible(false);
 		return true;
 	}
 
@@ -238,6 +250,8 @@ public class LoginScreen implements Screen,InputProcessor{
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY=(int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
+		
+		keyBoard.touchDown(touch);
 		
 		if(Intersector.overlaps(touch, loginBounds)){login.toggle();}
 		else if(Intersector.overlaps(touch, signUpBounds)){signUp.toggle();}
@@ -247,14 +261,18 @@ public class LoginScreen implements Screen,InputProcessor{
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		Gdx.input.setOnscreenKeyboardVisible(false);
-		selected = 0;
+		//Gdx.input.setOnscreenKeyboardVisible(false);
+		
 		
 		screenY=(int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
-		
-		if(Intersector.overlaps(touch, emailBounds)){selected = 1;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch, passBounds)){selected = 2;Gdx.input.setOnscreenKeyboardVisible(true);}
+		if(!Intersector.overlaps(touch, keyBoard.bounds)){selected = 0;keyBoard.isVisible = false;}
+		else{
+			keyBoard.touchUp(touch);
+		}
+		if(!keyBoard.isVisible){
+		if(Intersector.overlaps(touch, emailBounds)){selected = 1;keyBoard.isVisible = true;}
+		else if(Intersector.overlaps(touch, passBounds)){selected = 2;keyBoard.isVisible = true;}
 		else if(Intersector.overlaps(touch, loginBounds)){login.toggle();Login l = new Login();l.email=e;l.pass=p;u.send(l);
 			if(remember.isChecked()){
 				System.out.println("Save attempt");
@@ -265,7 +283,7 @@ public class LoginScreen implements Screen,InputProcessor{
 		else if(Intersector.overlaps(touch, signUpBounds)){signUp.toggle();u.setScreen(new SignUpScreen(u));}
 		else if(Intersector.overlaps(touch, rememberBounds)){remember.toggle();}
 		else if(Intersector.overlaps(touch, forgotBounds)){forgot.toggle();u.send(new Forgot(e));}
-		
+		}
 		return true;
 	}
 

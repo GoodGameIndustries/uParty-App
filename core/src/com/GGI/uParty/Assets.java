@@ -30,6 +30,8 @@ public class Assets {
 	public TextureRegionDrawable textStyleBorder;
 	public TextureRegionDrawable buttonStyleUp;
 	public TextureRegionDrawable buttonStyleDown;
+	public TextureRegionDrawable keyStyleUp;
+	public TextureRegionDrawable keyStyleDown;
 	public TextureRegionDrawable checkBoxStyleOn;
 	public TextureRegionDrawable checkBoxStyleOff;
 	public TextureRegion voteButtonUp;
@@ -72,6 +74,8 @@ public class Assets {
 		textStyleBorder = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/TextStyleBorder.png"))));
 		buttonStyleUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/ButtonStyleUp.png"))));
 		buttonStyleDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/ButtonStyleDown.png"))));
+		keyStyleUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/KeyStyleUp.png"))));
+		keyStyleDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/KeyStyleDown.png"))));
 		checkBoxStyleOn = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/CheckBoxStyleOn.png"))));
 		checkBoxStyleOff = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/CheckBoxStyleOff.png"))));
 		voteButtonUp = new TextureRegion(new Texture(Gdx.files.internal("Images/voteButtonUp.png")));

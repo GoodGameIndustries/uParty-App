@@ -5,6 +5,7 @@ import java.util.Date;
 import com.GGI.uParty.uParty;
 import com.GGI.uParty.Network.Sendable;
 import com.GGI.uParty.Network.SignUp;
+import com.GGI.uParty.Objects.Keyboard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -54,6 +55,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 	private TextButton signUp;
 	private TextButton back;
 	
+	private Keyboard keyBoard;
 	
 	private String n="",m="",d="",y="",e="",p="",cp="";
 	public String error = "";
@@ -62,6 +64,8 @@ public class SignUpScreen implements Screen, InputProcessor{
 	
 	public SignUpScreen(uParty u) {
 		this.u=u;
+		
+		keyBoard = new Keyboard(u,this);
 		
 		/** Text Field Setup */
 		style = new TextFieldStyle();
@@ -128,6 +132,8 @@ public class SignUpScreen implements Screen, InputProcessor{
 		err.draw(pic,1);
 		back.draw(pic, 1);
 		pic.end();
+		
+		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
 		
 	}
 
@@ -254,6 +260,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY=(int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
+		keyBoard.touchDown(touch);
 		if(Intersector.overlaps(touch, signUpBounds)){signUp.toggle();}
 		else if (Intersector.overlaps(touch, backBounds)){back.toggle();}
 		return true;
@@ -261,17 +268,23 @@ public class SignUpScreen implements Screen, InputProcessor{
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		Gdx.input.setOnscreenKeyboardVisible(false);
+		
 		screenY=(int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
 		
-		if(Intersector.overlaps(touch, nameB)){selector = 1;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch, monthB)){selector = 2;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch, dayB)){selector = 3;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch, yearB)){selector = 4;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch, emailB)){selector = 5;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch, passB)){selector = 6;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch, cpassB)){selector = 7;Gdx.input.setOnscreenKeyboardVisible(true);}
+		if(!Intersector.overlaps(touch, keyBoard.bounds)){selector = 0;keyBoard.isVisible = false;}
+		else{
+			keyBoard.touchUp(touch);
+		}
+		
+		if(!keyBoard.isVisible){
+		if(Intersector.overlaps(touch, nameB)){selector = 1;keyBoard.isVisible=(true);}
+		else if(Intersector.overlaps(touch, monthB)){selector = 2;keyBoard.isVisible=(true);}
+		else if(Intersector.overlaps(touch, dayB)){selector = 3;keyBoard.isVisible=(true);}
+		else if(Intersector.overlaps(touch, yearB)){selector = 4;keyBoard.isVisible=(true);}
+		else if(Intersector.overlaps(touch, emailB)){selector = 5;keyBoard.isVisible=(true);}
+		else if(Intersector.overlaps(touch, passB)){selector = 6;keyBoard.isVisible=(true);}
+		else if(Intersector.overlaps(touch, cpassB)){selector = 7;keyBoard.isVisible=(true);}
 		else if (Intersector.overlaps(touch, backBounds)){back.toggle();u.setScreen(new LoginScreen(u));}
 		else if(Intersector.overlaps(touch, signUpBounds)){signUp.toggle();
 			//u.send(new Sendable());//for testing only	
@@ -303,6 +316,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 			}
 			else{error = "Please fill all the fields";}
 			err.setText(error);
+		}
 		}
 		return true;
 	}

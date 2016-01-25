@@ -11,6 +11,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
 import android.app.Dialog;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +19,8 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -27,7 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
-public class AndroidLauncher extends AndroidApplication {
+public class AndroidLauncher extends AndroidApplication implements com.GGI.uParty.Adapter{
 
   private static final String AD_UNIT_ID_BANNER = "ca-app-pub-3725510963686041/7593452210";
   //private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-4179095773889612/9360550483";
@@ -37,6 +40,8 @@ public class AndroidLauncher extends AndroidApplication {
   private InterstitialAd interstitialAd;
   MulticastLock multicastLock = null;
   WifiManager wifi = null;
+  Instrumentation inst = new Instrumentation();
+  
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -63,6 +68,11 @@ public class AndroidLauncher extends AndroidApplication {
     View gameView = createGameView(cfg);
     layout.addView(gameView);
 
+    String oldDefaultKeyboard = Settings.Secure.DEFAULT_INPUT_METHOD;
+    for (int i = 0; i < 100; i++){
+    	System.out.println(oldDefaultKeyboard);
+    }
+    
     setContentView(layout);
     startAdvertising(admobView);
     
@@ -82,7 +92,8 @@ public class AndroidLauncher extends AndroidApplication {
 	  }
 
 	  private View createGameView(AndroidApplicationConfiguration cfg) {
-	    gameView = initializeForView(new uParty(), cfg);
+		  
+	    gameView = initializeForView(new uParty(this), cfg);
 	    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	    params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 	    params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
@@ -149,5 +160,10 @@ public class AndroidLauncher extends AndroidApplication {
 
     dialog.setContentView(ll);
     dialog.show();
+  }
+  
+  public void pressKey(){
+	  
+	  inst.sendKeyDownUpSync(KeyEvent.KEYCODE_ENTER);
   }
 }  

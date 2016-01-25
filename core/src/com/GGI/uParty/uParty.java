@@ -22,8 +22,10 @@ public class uParty extends Game {
 	public Assets assets;
 	private Client client;
 	private boolean debug = false;
-	
-	
+	private Adapter adapter;
+	public uParty(Adapter adapter){
+		this.adapter=adapter;
+	}
 	
 	@Override
 	public void create () {
@@ -63,6 +65,7 @@ public class uParty extends Game {
 		        	 PList o = (PList)object;
 		        	 assets.parties.refresh(o.parties);
 		        	 System.out.println("Refreshing parties");
+		        	 System.out.println("Parties: "+o.parties.size());
 		         }
 		       }
 			
@@ -86,6 +89,7 @@ public class uParty extends Game {
 	}
 	
 	public void send(Sendable s){
+		System.out.println("Sent something");
 		connect();
 		int t=0;
 		boolean noSend=true;
@@ -99,6 +103,8 @@ public class uParty extends Game {
 			connect();
 		}
 	}
+	
+	
 
 	
 	

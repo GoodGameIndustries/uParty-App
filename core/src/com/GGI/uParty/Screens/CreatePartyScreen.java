@@ -6,6 +6,7 @@ import java.util.Date;
 import com.GGI.uParty.uParty;
 import com.GGI.uParty.Network.CreateParty;
 import com.GGI.uParty.Network.Party;
+import com.GGI.uParty.Objects.Keyboard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -49,12 +50,15 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 	private TextArea description;
 	private TextArea where;
 	
+	private Keyboard keyBoard;
 	
 	
 	public String n="",d="",hr="",m="",wr="";
 	
 	public CreatePartyScreen(uParty u) {
 		this.u=u;
+		
+		keyBoard = new Keyboard(u,this);
 		
 		/** Text Field Setup */
 		style = new TextFieldStyle();
@@ -123,6 +127,8 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 		createParty.draw(pic,1);
 		pic.end();
 		
+		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
+		
 	}
 
 	@Override
@@ -169,6 +175,7 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 
 	@Override
 	public boolean keyTyped(char character) {
+		System.out.println("Char: "+character+":"+select);
 		/**Name*/
 		if(select==1){if(character == ''&&n.length()>0){
 			n=n.substring(0, n.length()-1);
@@ -256,10 +263,12 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		select = 0;
-		Gdx.input.setOnscreenKeyboardVisible(false);
+		
+		
+		
 		screenY = (int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
+		keyBoard.touchDown(touch);
 		if(Intersector.overlaps(touch, tSwitchB)){tSwitch.toggle();}
 		else if(Intersector.overlaps(touch,createPartyB)){createParty.toggle();}
 		return true;
@@ -269,6 +278,13 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		screenY = (int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
+		
+		if(!Intersector.overlaps(touch, keyBoard.bounds)){select = 0;keyBoard.isVisible = false;}
+		else{
+			keyBoard.touchUp(touch);
+		}
+		
+	
 		if(Intersector.overlaps(touch, tSwitchB)){tSwitch.toggle();isPm=!isPm;}
 		else if(Intersector.overlaps(touch,createPartyB)){createParty.toggle();
 			if(n.length()>0&&hr.length()>0&&m.length()>0&&d.length()>0&&wr.length()>0){
@@ -289,11 +305,12 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 				u.setScreen(new MainScreen(u));
 			}
 		}
-		else if(Intersector.overlaps(touch,nameB)){select = 1;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch,hourB)){select = 2;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch,minB)){select = 3;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch,descriptionB)){select = 4;Gdx.input.setOnscreenKeyboardVisible(true);}
-		else if(Intersector.overlaps(touch,whereB)){select = 5;Gdx.input.setOnscreenKeyboardVisible(true);}
+		
+		if(Intersector.overlaps(touch,nameB)){select = 1;keyBoard.isVisible=(true);}
+		if(Intersector.overlaps(touch,hourB)){select = 2;keyBoard.isVisible=(true);}
+		if(Intersector.overlaps(touch,minB)){select = 3;keyBoard.isVisible=(true);}
+		if(Intersector.overlaps(touch,descriptionB)){select = 4;keyBoard.isVisible=(true);}
+		if(Intersector.overlaps(touch,whereB)){select = 5;keyBoard.isVisible=(true);}
 		
 		return true;
 	}
