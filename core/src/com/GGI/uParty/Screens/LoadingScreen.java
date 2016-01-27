@@ -24,6 +24,8 @@ public class LoadingScreen implements Screen{
 		Thread t = new Thread(new ParaLoad());
 		t.start();
 		
+		u.adapter.showOrLoadInterstital();
+		
 		
 	}
 

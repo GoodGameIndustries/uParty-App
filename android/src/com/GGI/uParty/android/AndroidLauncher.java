@@ -29,11 +29,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 
 public class AndroidLauncher extends AndroidApplication implements com.GGI.uParty.Adapter{
 
   private static final String AD_UNIT_ID_BANNER = "ca-app-pub-3725510963686041/7593452210";
-  //private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-4179095773889612/9360550483";
+  private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-3725510963686041/5655385018";
   private static final String GOOGLE_PLAY_URL = "https://play.google.com/store/apps/developer?id=Good%20Game%20Industries&hl=en";
   protected AdView adView;
   protected View gameView;
@@ -41,6 +42,7 @@ public class AndroidLauncher extends AndroidApplication implements com.GGI.uPart
   MulticastLock multicastLock = null;
   WifiManager wifi = null;
   Instrumentation inst = new Instrumentation();
+  private boolean adShown = false;
   
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -64,20 +66,56 @@ public class AndroidLauncher extends AndroidApplication implements com.GGI.uPart
     layout.setLayoutParams(params);
 
     AdView admobView = createAdView();
-    layout.addView(admobView);
+    //layout.addView(admobView);
     View gameView = createGameView(cfg);
     layout.addView(gameView);
 
-    String oldDefaultKeyboard = Settings.Secure.DEFAULT_INPUT_METHOD;
-    for (int i = 0; i < 100; i++){
-    	System.out.println(oldDefaultKeyboard);
-    }
+    
     
     setContentView(layout);
-    startAdvertising(admobView);
+    //startAdvertising(admobView);
     
+    interstitialAd = new InterstitialAd(this);
+    interstitialAd.setAdUnitId(AD_UNIT_ID_INTERSTITIAL);
+    interstitialAd.setAdListener(new AdListener() {
+        @Override
+        public void onAdLoaded() {
+        	adShown=true;
+      	  interstitialAd.show();
+        	//Toast.makeText(getApplicationContext(), "Finished Loading Interstitial", Toast.LENGTH_SHORT).show();
+        }
+        @Override
+        public void onAdClosed() {
+          //Toast.makeText(getApplicationContext(), "Closed Interstitial", Toast.LENGTH_SHORT).show();
+        }
+      });
+     
   }
 
+  @Override
+  public void showOrLoadInterstital() {
+    try {
+      runOnUiThread(new Runnable() {
+        public void run() {
+        	
+          if (interstitialAd.isLoaded()) {
+        	  adShown=true;
+        	  interstitialAd.show();
+           // Toast.makeText(getApplicationContext(), "Showing Interstitial", Toast.LENGTH_SHORT).show();
+          }
+          else {
+            AdRequest interstitialRequest = new AdRequest.Builder().addTestDevice("1A9B9E06D85890AEBDAEC34616F502D2").addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+            interstitialAd.loadAd(interstitialRequest);
+            
+            //Toast.makeText(getApplicationContext(), "Loading Interstitial", Toast.LENGTH_SHORT).show();
+          }
+        	}
+        
+      });
+    } catch (Exception e) {
+    }
+  }
+  
   private AdView createAdView() {
 	    adView = new AdView(this);
 	    adView.setAdSize(AdSize.SMART_BANNER);

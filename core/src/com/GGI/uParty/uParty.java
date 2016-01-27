@@ -22,7 +22,7 @@ public class uParty extends Game {
 	public Assets assets;
 	private Client client;
 	private boolean debug = false;
-	private Adapter adapter;
+	public Adapter adapter;
 	public uParty(Adapter adapter){
 		this.adapter=adapter;
 	}
