@@ -55,7 +55,8 @@ public class PartyList extends ArrayList<PartyModule>{
 		this.clear();
 		Date d = new Date();
 		for(int i = 0; i < parties.size();i++){
-			this.add(new PartyModule(u,parties.get(i)));
+			if(d.getDate()==parties.get(i).d.getDate()){
+			this.add(new PartyModule(u,parties.get(i)));}
 		}
 		Collections.sort(this);
 	}

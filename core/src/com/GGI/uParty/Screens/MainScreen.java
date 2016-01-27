@@ -165,10 +165,14 @@ public class MainScreen implements Screen, InputProcessor{
 		
 		//System.out.println("dragged");
 		System.out.println(scrolled);
-		scrolled-=screenY-touchY;
-		if(scrolled<0){scrolled = 0;}
-		if(parties.height-scrolled<=.825f*h){scrolled = (int) (parties.height-(.825*h));}
-		touchY=screenY;
+		if(parties.height>.825f*h){
+			scrolled-=screenY-touchY;
+			if(scrolled<0){scrolled = 0;}
+			if(parties.height-scrolled<=.825f*h){scrolled = (int) (parties.height-(.825*h));}
+			touchY=screenY;
+		}
+		
+		
 		return true;
 	}
 
