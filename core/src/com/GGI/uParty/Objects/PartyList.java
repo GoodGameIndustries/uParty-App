@@ -52,12 +52,15 @@ public class PartyList extends ArrayList<PartyModule>{
 	}
 
 	public void refresh(ArrayList<Party> parties) {
-		this.clear();
+		//this.clear();
+		ArrayList<PartyModule> p = new ArrayList<PartyModule>();
 		Date d = new Date();
 		for(int i = 0; i < parties.size();i++){
 			if(d.getDate()==parties.get(i).d.getDate()){
-			this.add(new PartyModule(u,parties.get(i)));}
+			p.add(new PartyModule(u,parties.get(i)));}
 		}
-		Collections.sort(this);
+		Collections.sort(p);
+		this.clear();
+		this.addAll(p);
 	}
 }

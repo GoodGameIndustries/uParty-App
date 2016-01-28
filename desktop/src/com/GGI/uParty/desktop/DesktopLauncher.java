@@ -16,4 +16,10 @@ public class DesktopLauncher implements Adapter{
 		config.height=900;
 		new LwjglApplication(new uParty(this), config);
 	}
+
+	@Override
+	public void showOrLoadInterstital() {
+		// TODO Auto-generated method stub
+		
+	}
 }

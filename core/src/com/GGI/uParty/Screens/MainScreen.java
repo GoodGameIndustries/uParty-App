@@ -164,13 +164,19 @@ public class MainScreen implements Screen, InputProcessor{
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		
 		//System.out.println("dragged");
-		System.out.println(scrolled);
+		
+		System.out.println(screenY);
 		if(parties.height>.825f*h){
-			scrolled-=screenY-touchY;
-			if(scrolled<0){scrolled = 0;}
-			if(parties.height-scrolled<=.825f*h){scrolled = (int) (parties.height-(.825*h));}
-			touchY=screenY;
-		}
+			
+			int afterScroll = scrolled-(screenY-touchY);
+			//if(scrolled<0){scrolled = 0;}
+			//if(parties.height-scrolled<=.825f*h){scrolled = prescrolled;}
+			if((afterScroll<0||parties.height-afterScroll<=.825f*h)||Math.abs(screenY-touchY)<=5||Math.abs(screenY-touchY)>h/15){}
+			else{
+				scrolled-=screenY-touchY;
+			}
+			touchY=screenY;}
+		
 		
 		
 		return true;
