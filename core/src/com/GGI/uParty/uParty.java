@@ -6,12 +6,11 @@ import com.GGI.uParty.Network.Err;
 import com.GGI.uParty.Network.Network;
 import com.GGI.uParty.Network.PList;
 import com.GGI.uParty.Network.Profile;
-import com.GGI.uParty.Network.Refresh;
 import com.GGI.uParty.Network.Sendable;
-import com.GGI.uParty.Objects.PartyList;
 import com.GGI.uParty.Screens.LoadingScreen;
 import com.GGI.uParty.Screens.LoginScreen;
 import com.GGI.uParty.Screens.SignUpScreen;
+import com.GGI.uParty.Screens.VersionUpdateScreen;
 import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -23,6 +22,7 @@ public class uParty extends Game {
 	private Client client;
 	private boolean debug = false;
 	public Adapter adapter;
+	public String version = "1.0";
 	public uParty(Adapter adapter){
 		this.adapter=adapter;
 	}
@@ -39,6 +39,10 @@ public class uParty extends Game {
 				 
 		         if (object instanceof Err) {
 					 Err e = (Err)object;
+					 if(e.message.equals("Version")){
+						 setToUpdate();
+					 }
+					 
 		             if(getScreen() instanceof SignUpScreen){
 		            	 SignUpScreen s = (SignUpScreen)getScreen();
 		            	 s.error=e.message;
@@ -74,6 +78,11 @@ public class uParty extends Game {
 		setScreen(new LoadingScreen(this));
 	}
 	
+	protected void setToUpdate() {
+		setScreen(new VersionUpdateScreen(this));
+		
+	}
+
 	public void connect(){
 		if(!client.isConnected()){
 			try {

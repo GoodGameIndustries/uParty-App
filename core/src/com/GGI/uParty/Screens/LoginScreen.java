@@ -273,7 +273,7 @@ public class LoginScreen implements Screen,InputProcessor{
 		if(!keyBoard.isVisible){
 		if(Intersector.overlaps(touch, emailBounds)){selected = 1;keyBoard.isVisible = true;}
 		else if(Intersector.overlaps(touch, passBounds)){selected = 2;keyBoard.isVisible = true;}
-		else if(Intersector.overlaps(touch, loginBounds)){login.toggle();Login l = new Login();l.email=e;l.pass=p;u.send(l);
+		else if(Intersector.overlaps(touch, loginBounds)){login.toggle();Login l = new Login();l.email=e;l.pass=p;l.version=u.version;u.send(l);
 			if(remember.isChecked()){
 				System.out.println("Save attempt");
 				FileHandle file = Gdx.files.local("uPartyRemember.txt");

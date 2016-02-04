@@ -19,4 +19,16 @@ public class IOSLauncher extends IOSApplication.Delegate implements Adapter {
         UIApplication.main(argv, null, IOSLauncher.class);
         pool.close();
     }
+
+	@Override
+	public void showOrLoadInterstital() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void goToUpdate() {
+		// TODO Auto-generated method stub
+		
+	}
 }

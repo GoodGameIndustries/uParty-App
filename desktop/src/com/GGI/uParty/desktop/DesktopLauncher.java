@@ -19,7 +19,13 @@ public class DesktopLauncher implements Adapter{
 
 	@Override
 	public void showOrLoadInterstital() {
-		// TODO Auto-generated method stub
+		System.out.println("show ad");
+		
+	}
+
+	@Override
+	public void goToUpdate() {
+		System.out.println("update");
 		
 	}
 }

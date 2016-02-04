@@ -17,4 +17,16 @@ public class HtmlLauncher extends GwtApplication implements Adapter {
         public ApplicationListener getApplicationListener () {
                 return new uParty(this);
         }
+
+		@Override
+		public void showOrLoadInterstital() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void goToUpdate() {
+			// TODO Auto-generated method stub
+			
+		}
 }
