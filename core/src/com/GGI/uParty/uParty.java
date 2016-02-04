@@ -3,6 +3,7 @@ package com.GGI.uParty;
 import java.io.IOException;
 
 import com.GGI.uParty.Network.Err;
+import com.GGI.uParty.Network.Login;
 import com.GGI.uParty.Network.Network;
 import com.GGI.uParty.Network.PList;
 import com.GGI.uParty.Network.Profile;
@@ -12,6 +13,7 @@ import com.GGI.uParty.Screens.LoginScreen;
 import com.GGI.uParty.Screens.SignUpScreen;
 import com.GGI.uParty.Screens.VersionUpdateScreen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -23,6 +25,7 @@ public class uParty extends Game {
 	private boolean debug = false;
 	public Adapter adapter;
 	public String version = "1.0";
+	public boolean updateReq = false;;
 	public uParty(Adapter adapter){
 		this.adapter=adapter;
 	}
@@ -34,13 +37,15 @@ public class uParty extends Game {
 		assets = new Assets(this);
 		
 		client.addListener(new ThreadedListener(new Listener(){
-			 public void received (Connection connection, Object object) {
+			 
+
+			public void received (Connection connection, Object object) {
 		         //System.out.println("I recieved something");
 				 
 		         if (object instanceof Err) {
 					 Err e = (Err)object;
 					 if(e.message.equals("Version")){
-						 setToUpdate();
+						updateReq=true;
 					 }
 					 
 		             if(getScreen() instanceof SignUpScreen){
@@ -78,11 +83,7 @@ public class uParty extends Game {
 		setScreen(new LoadingScreen(this));
 	}
 	
-	protected void setToUpdate() {
-		setScreen(new VersionUpdateScreen(this));
-		
-	}
-
+	
 	public void connect(){
 		if(!client.isConnected()){
 			try {
@@ -98,6 +99,12 @@ public class uParty extends Game {
 	}
 	
 	public void send(Sendable s){
+		if(s instanceof Login){
+			Login l = (Login)s;
+			l.version=this.version;
+			s=l;
+		}
+		
 		System.out.println("Sent something");
 		connect();
 		int t=0;

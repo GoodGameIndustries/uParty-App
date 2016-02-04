@@ -171,6 +171,10 @@ public class LoginScreen implements Screen,InputProcessor{
 		
 		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
 		
+		if(u.updateReq){
+			u.setScreen(new VersionUpdateScreen(u));
+		}
+		
 	}
 
 	@Override

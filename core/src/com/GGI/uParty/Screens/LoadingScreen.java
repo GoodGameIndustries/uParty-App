@@ -32,6 +32,8 @@ public class LoadingScreen implements Screen{
 	@Override
 	public void render(float delta) {
 		
+		
+		
 		Gdx.gl.glClearColor(.1f, .1f, .1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		theta+=Math.PI/24;
@@ -41,6 +43,10 @@ public class LoadingScreen implements Screen{
 		
 		if(theta>6*Math.PI){
 			u.setScreen(u.assets.myProfile==null||!u.assets.myProfile.verr?new LoginScreen(u):new MainScreen(u));
+		}
+		
+		if(u.updateReq){
+			u.setScreen(new VersionUpdateScreen(u));
 		}
 		
 	}
@@ -84,6 +90,7 @@ public class LoadingScreen implements Screen{
 			Login l = new Login();
 			l.email=split[0];
 			l.pass=split[1];
+			l.version=u.version;
 			u.send(l);
 			}
 			

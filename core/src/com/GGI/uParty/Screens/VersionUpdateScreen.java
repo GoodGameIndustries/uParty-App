@@ -31,9 +31,9 @@ public class VersionUpdateScreen implements Screen, InputProcessor{
 	
 	private TextButton update;
 	
-	private Rectangle bounds = new Rectangle(w/8, h/3, 9*w/16, h/16);
+	private Rectangle bounds = new Rectangle(w/3, h/2, w/3, h/16);
 
-	private GlyphLayout layout;
+	private GlyphLayout layout = new GlyphLayout();
 	public VersionUpdateScreen(uParty u){
 		this.u=u;
 		
@@ -44,7 +44,8 @@ public class VersionUpdateScreen implements Screen, InputProcessor{
 			buttonStyle.down=u.assets.buttonStyleDown;
 			buttonStyle.checked=u.assets.buttonStyleDown;
 			
-		TextButton update = new TextButton("Update", buttonStyle);
+		update = new TextButton("Update", buttonStyle);
+		update.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
 	
 	@Override
@@ -59,10 +60,10 @@ public class VersionUpdateScreen implements Screen, InputProcessor{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		pic.begin();
-		u.assets.large.setColor(u.assets.orange);
-		layout.setText(u.assets.large, "uParty is out of date. You must update it.");
-		u.assets.large.draw(pic, "uParty is out of date. You must update it.", w/2-layout.width/2, 2*h/3);
-		
+		u.assets.medium.setColor(u.assets.orange);
+		layout.setText(u.assets.medium, "uParty is out of date. You must update it.");
+		u.assets.medium.draw(pic, "uParty is out of date. You must update it.", w/2-layout.width/2, 2*h/3);
+		update.draw(pic, 1);
 		pic.end();
 		
 	}
