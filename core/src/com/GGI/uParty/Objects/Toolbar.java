@@ -21,11 +21,20 @@ public class Toolbar {
 	private GlyphLayout layout = new GlyphLayout();
 	public boolean loggingOut=false;
 	public boolean backEnabled=false;
+	
+	/**The toolbar is the top bar that displays your name and allows 
+	 * you to log out
+	 * @param u
+	 */
 	public Toolbar(uParty u){
 		this.u=u;
 		pic = new SpriteBatch();
 		shape = new ShapeRenderer();
 	}
+	
+	/**This method is responsible for rendering the toolbar on top of
+	 * everything else
+	 */
 	public void render(){
 		shape.begin(ShapeType.Filled);
 		shape.setColor(u.assets.orange);
@@ -43,6 +52,11 @@ public class Toolbar {
 		pic.end();
 	}
 	
+	/**This method determines what happens if the toolbar is touched
+	 * It typically switches to showing the logging out option
+	 * @param touch
+	 * @return ifTouched
+	 */
 	public boolean touch(Rectangle touch){
 		layout.setText(u.assets.medium, loggingOut?"Logout":u.assets.myProfile.name);
 		if(Intersector.overlaps(touch, new Rectangle(.95f*w-layout.width, .98f*h-layout.height,layout.width,layout.height))){

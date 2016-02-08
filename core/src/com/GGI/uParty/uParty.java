@@ -19,17 +19,23 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 
+/**Game class that allows for interaction between the java
+ *emulator and the native android or ios code*/
 public class uParty extends Game {
 	public Assets assets;
 	private Client client;
 	private boolean debug = false;
 	public Adapter adapter;
 	public String version = "1.0";
-	public boolean updateReq = false;;
+	public boolean updateReq = false;
+	
+	/**Constructor to attach adapter interface*/
 	public uParty(Adapter adapter){
 		this.adapter=adapter;
 	}
-	
+	/**This method does everything needed when an object of this class
+	 * is created.
+	 */
 	@Override
 	public void create () {
 		client= new Client();
@@ -83,7 +89,7 @@ public class uParty extends Game {
 		setScreen(new LoadingScreen(this));
 	}
 	
-	
+	/**Connects the client to the server*/
 	public void connect(){
 		if(!client.isConnected()){
 			try {
@@ -98,6 +104,7 @@ public class uParty extends Game {
 		}
 	}
 	
+	/**Sends a sendable object to the server*/
 	public void send(Sendable s){
 		if(s instanceof Login){
 			Login l = (Login)s;

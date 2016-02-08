@@ -36,6 +36,7 @@ public class Keyboard {
 	private boolean isShifted = false;
 	public double theta = 0;
 	
+	/**This class represents the uParty keyboard*/
 	public Keyboard(uParty u, InputProcessor inp){
 		this.u=u;
 		this.inp=inp;
@@ -53,6 +54,7 @@ public class Keyboard {
 		initKeys();
 	}
 	
+	/**creates all the needed keys and sets their bounds*/
 	public void initKeys(){
 			keys.add(new Key("1","1",this));
 			keys.get(keys.size()-1).setBounds(w/60, 17*h/60, w/15, 2*h/60);
@@ -185,6 +187,10 @@ public class Keyboard {
 			
 	}
 	
+	/**If the keyboard is touched it resolves what to do based on where
+	 * it is pressed
+	 * @param touch
+	 */
 	public void touchDown(Rectangle touch){
 		for(int i = 0; i<keys.size();i++){
 			if(Intersector.overlaps(touch, keys.get(i).bounds)){
@@ -194,6 +200,10 @@ public class Keyboard {
 		}
 	}
 	
+	/**If the keyboard is released what to do based on where 
+	 * it was touched
+	 * @param touch
+	 */
 	public void touchUp(Rectangle touch){
 		for(int i = 0; i<keys.size();i++){
 				keys.get(i).setChecked(false);
@@ -216,7 +226,10 @@ public class Keyboard {
 		}
 	}
 	
-	
+	/**If the shift key is pressed this toggles the shift boolean
+	 * and makes sure all the individual keys know that the shift 
+	 * key is pressed
+	 */
 	private void shift() {
 		isShifted = !isShifted;
 		for(int i = 0; i < keys.size(); i++){
@@ -225,6 +238,9 @@ public class Keyboard {
 		
 	}
 
+	/**This method takes care of rendering the keyboard onto the screen.
+	 * It Renders the background then each key on top.
+	 */
 	public void render(){
 		if(isVisible&&theta<Math.PI/2){theta+=Math.PI/4;}
 		if(!isVisible&&theta>0){theta-=Math.PI/4;}

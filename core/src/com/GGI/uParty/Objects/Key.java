@@ -9,6 +9,7 @@ public class Key extends TextButton{
 	public Keyboard keyBoard;
 	public Rectangle bounds;
 	
+	/**This class represents a key on the keyboard*/
 	public Key(String text,String shiftText, Keyboard k) {
 		super(text, k.buttonStyle);
 		lowerCase = text;
@@ -17,10 +18,12 @@ public class Key extends TextButton{
 		
 	}
 	
+	/**If the shift key is pressed this changes the character of the key*/
 	public void shift(boolean b){
 		setText(b?upperCase:lowerCase);
 	}
 	
+	/**sets up the bounds of the button*/
 	public void setBounds(float x, float y, float w, float h){
 		super.setBounds(x, y, w, h);
 		bounds = new Rectangle(x,y,w,h);

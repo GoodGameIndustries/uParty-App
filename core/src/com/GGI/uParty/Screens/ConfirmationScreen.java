@@ -40,6 +40,10 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 	private TextButton resend;
 	private TextButton cont;
 	
+	/**This screen allows you to type in your confirmation code
+	 * that allows us to make sure it is a real email
+	 * @param u
+	 */
 	public ConfirmationScreen(uParty u){
 		this.u=u;
 		
@@ -66,12 +70,18 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 			cont.setBounds(contBounds.x, contBounds.y, contBounds.width, contBounds.height);
 	}
 	
+	/**when the screen is first shown this method is called
+	 * and does what is necessary for the screen
+	 */
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
 		
 	}
 
+	/**this method is responsible for rendering the entire screen
+	 *with its buttons
+	 */
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(.1f, .1f, .1f, 1);

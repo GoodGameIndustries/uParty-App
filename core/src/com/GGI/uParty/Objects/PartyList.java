@@ -17,12 +17,19 @@ public class PartyList extends ArrayList<PartyModule>{
 	
 	public uParty u;
 	
+	/**The party list holds all of the parties that have been generated
+	 * in their party modules
+	 * @param u
+	 */
 	public PartyList(uParty u){
 		this.u=u;
 	}
 	
 	
-
+	/**This method takes care of rendering of the party modules and also
+	 * simulates the scrolling
+	 * @param scrolled
+	 */
 	public void render(int scrolled){
 		height = 0;
 		for(int i = 0;i<size();i++){
@@ -33,6 +40,11 @@ public class PartyList extends ArrayList<PartyModule>{
 		
 	}
 	
+	/**If touched this method is triggered and decides the proper action
+	 * based on the touch
+	 * @param touch
+	 * @return ifTouched
+	 */
 	public boolean down(Rectangle touch){
 		if(!Intersector.overlaps(touch, new Rectangle(0,.945f*h-height,w,height))){return false;}
 		else{for(int i = 0; i < size();i++){
@@ -42,6 +54,11 @@ public class PartyList extends ArrayList<PartyModule>{
 		
 	}
 	
+	/**If released this method is triggered and decides the proper action
+	 * based on the touch
+	 * @param touch
+	 * @return ifReleased
+	 */
 	public boolean up(Rectangle touch){
 		if(!Intersector.overlaps(touch, new Rectangle(0,.945f*h-height,w,height))){return false;}
 		else{for(int i = 0; i < size();i++){
@@ -51,6 +68,10 @@ public class PartyList extends ArrayList<PartyModule>{
 		
 	}
 
+	/**This method updates all the parties in the list while also
+	 * sorting them and removing any parties that are too old
+	 * @param parties
+	 */
 	public void refresh(ArrayList<Party> parties) {
 		//this.clear();
 		ArrayList<PartyModule> p = new ArrayList<PartyModule>();

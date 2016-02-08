@@ -43,6 +43,7 @@ public class Assets {
 	public BitmapFont medium;
 	public BitmapFont large;
 	
+	/**Class used to organize and load all necessary files*/
 	public Assets(uParty u){
 		this.u=u;
 		loadImages();
@@ -51,7 +52,7 @@ public class Assets {
 		parties = new PartyList(u);
 	}
 
-
+	/**loads all necessary fonts*/
 	private void loadFonts() {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -68,7 +69,7 @@ public class Assets {
 		
 	}
 
-
+	/**loads all necessary images*/
 	private void loadImages() {
 		logo1024 = new Texture(Gdx.files.internal("1024.png"));
 		textStyleBorder = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/TextStyleBorder.png"))));

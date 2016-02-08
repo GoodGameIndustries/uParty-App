@@ -40,6 +40,12 @@ public class PartyModule implements Comparable{
 	public TextureRegion flippedUp,flippedDown;
 	public boolean locationEnabled = true;
 	
+
+	/**This class is a visual representation of a given party
+	 * It allows us to render the party and display its information
+	 * @param u
+	 * @param p
+	 */
 	public PartyModule(uParty u,Party p){
 		this.u=u;
 		this.p=p;
@@ -60,6 +66,10 @@ public class PartyModule implements Comparable{
 		voteDown.setBounds(voteDownB.x, voteDownB.y, voteDownB.width, voteDownB.height);
 	}
 	
+	/**this method is responsible for the rendering of the module
+	 * it displays all of the parties information in a relative manner
+	 * so it will work on any screensize
+	 */
 	public void render(){
 		if(pic==null){pic = new SpriteBatch();}
 		if(shape==null){shape = new ShapeRenderer();}
@@ -109,12 +119,23 @@ public class PartyModule implements Comparable{
 		pic.end();
 	}
 	
+	/**If the module is touched this method determines what to do
+	 * with the touch
+	 * @param touch
+	 * @return ifTouched
+	 */
 	public boolean down(Rectangle touch){
 		if(!Intersector.overlaps(touch, bounds)){return false;}
 		//System.out.println("Down on module");
 		return true;
 		
 	}
+	
+	/**If the module is released this method determines what to do
+	 * with the touch
+	 * @param touch
+	 * @return ifReleased
+	 */
 	public boolean up(Rectangle touch){
 		if(!Intersector.overlaps(touch, bounds)){return false;}
 		else if(Intersector.overlaps(touch, voteUpB)){u.send(new VoteUp(p,u.assets.myProfile));}
@@ -129,7 +150,9 @@ public class PartyModule implements Comparable{
 	}
 
 	
-
+	/**This method allows for us to compare party modules to each other
+	 * based on date, this allows for an easy way for us to sort them
+	 */
 	@Override
 	public int compareTo(Object o) {
 		PartyModule comp = (PartyModule) o;
