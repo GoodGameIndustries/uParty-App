@@ -185,6 +185,9 @@ public class Keyboard {
 			keys.add(new Key("Enter","Enter",this));
 			keys.get(keys.size()-1).setBounds(49*w/60, 1*h/60, 5*w/30, 3*h/60);
 			
+			keys.add(new Key("Space","Space",this));
+			keys.get(keys.size()-1).setBounds(19*w/60, 1*h/60, 11*w/30, 3*h/60);
+			
 	}
 	
 	/**If the keyboard is touched it resolves what to do based on where
@@ -215,6 +218,7 @@ public class Keyboard {
 					if(s.equals("Shift")){shift();}
 					else if(s.equals("Back")){inp.keyTyped('');}
 					else if(s.equals("Enter")){isVisible=false;}
+					else if(s.equals("Space")){inp.keyTyped(' ');}
 					
 				}
 				else{
@@ -255,7 +259,7 @@ public class Keyboard {
 		
 		
 		if(theta==Math.PI/2){
-			pic.draw(u.assets.logo1024, 9*w/20, (float) (1*h/60), w/10,w/10);
+			//pic.draw(u.assets.logo1024, 9*w/20, (float) (1*h/60), w/10,w/10);
 			for(int i = 0; i < keys.size(); i++){
 				keys.get(i).draw(pic, 1);
 			}
