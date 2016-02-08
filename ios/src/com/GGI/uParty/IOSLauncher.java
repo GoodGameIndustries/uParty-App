@@ -36,11 +36,7 @@ public class IOSLauncher extends IOSApplication.Delegate implements Adapter {
 		
 	}
 
-	@Override
-	public void goToUpdate() {
-		//Gdx.net.openURI("upartyapp.com/redirect");
-		
-	}
+	
 	
 	private GADInterstitial createAndLoadInterstitial() {
 	     //Ad Unit ID of your interstital, from your adMob account. Use the TEST one for now
