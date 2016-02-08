@@ -131,7 +131,8 @@ public class VersionUpdateScreen implements Screen, InputProcessor{
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
 		
 		if(Intersector.overlaps(touch, bounds)){update.toggle();
-		u.adapter.goToUpdate();
+		//u.adapter.goToUpdate();
+		Gdx.net.openURI("http://www.upartyapp.com/redirect");
 		}
 		return false;
 	}
