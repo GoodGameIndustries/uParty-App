@@ -23,9 +23,5 @@ public class DesktopLauncher implements Adapter{
 		
 	}
 
-	@Override
-	public void goToUpdate() {
-		System.out.println("update");
-		
-	}
+	
 }

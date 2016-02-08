@@ -205,9 +205,5 @@ public class AndroidLauncher extends AndroidApplication implements com.GGI.uPart
 	  inst.sendKeyDownUpSync(KeyEvent.KEYCODE_ENTER);
   }
 
-@Override
-public void goToUpdate() {
-	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.upartyapp.com/redirect")));
-	
-}
+
 }  
