@@ -3,6 +3,7 @@ package com.GGI.uParty.Screens;
 import com.GGI.uParty.uParty;
 import com.GGI.uParty.Network.ResendConfirmation;
 import com.GGI.uParty.Network.Verify;
+import com.GGI.uParty.Objects.Keyboard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -40,12 +41,16 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 	private TextButton resend;
 	private TextButton cont;
 	
+	private Keyboard keyBoard;
+	
 	/**This screen allows you to type in your confirmation code
 	 * that allows us to make sure it is a real email
 	 * @param u
 	 */
 	public ConfirmationScreen(uParty u){
 		this.u=u;
+		
+		keyBoard = new Keyboard(u,this);
 		
 		/** Text Field Setup */
 		style = new TextFieldStyle();
@@ -75,6 +80,7 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 	 */
 	@Override
 	public void show() {
+		Gdx.input.setOnscreenKeyboardVisible(false);
 		Gdx.input.setInputProcessor(this);
 		
 	}
@@ -102,6 +108,7 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 		cont.draw(pic, 1);
 		pic.end();
 		
+		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
 	}
 
 	@Override
@@ -148,6 +155,8 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 
 	@Override
 	public boolean keyTyped(char character) {
+		System.out.println(character);
+		System.out.println(selected);
 		if(selected==1){if(character == ''&&code.length()>0){
 			code=code.substring(0, code.length()-1);
 		}
@@ -175,8 +184,13 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		screenY=(int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
-		Gdx.input.setOnscreenKeyboardVisible(false);
-		selected = 0;
+		
+		//selected = 0;
+		
+		if(!Intersector.overlaps(touch, keyBoard.bounds)){selected = 0;keyBoard.isVisible = false;}
+		else{
+			keyBoard.touchUp(touch);
+		}
 		
 		if(Intersector.overlaps(touch, contBounds)){cont.toggle();
 			if(code!=null&&code.length()>0&&Integer.parseInt(code)==u.assets.myProfile.verrCode){u.assets.myProfile.verr=true;u.send(new Verify(u.assets.myProfile.email));u.setScreen(new MainScreen(u));}
@@ -184,7 +198,7 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 			}
 			
 		else if(Intersector.overlaps(touch, resendBounds)){resend.toggle();message = "New code sent!";u.send(new ResendConfirmation(u.assets.myProfile.email));}
-		else if(Intersector.overlaps(touch, codeBounds)){selected = 1;}
+		else if(Intersector.overlaps(touch, codeBounds)){selected = 1;keyBoard.isVisible=true;}
 		return true;
 	}
 
