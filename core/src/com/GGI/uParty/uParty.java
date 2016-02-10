@@ -3,12 +3,17 @@ package com.GGI.uParty;
 import java.awt.Point;
 import java.io.IOException;
 
+import com.GGI.uParty.Network.CreateParty;
 import com.GGI.uParty.Network.Err;
 import com.GGI.uParty.Network.Login;
 import com.GGI.uParty.Network.Network;
 import com.GGI.uParty.Network.PList;
+import com.GGI.uParty.Network.Party;
 import com.GGI.uParty.Network.Profile;
+import com.GGI.uParty.Network.Refresh;
 import com.GGI.uParty.Network.Sendable;
+import com.GGI.uParty.Network.VoteDown;
+import com.GGI.uParty.Network.VoteUp;
 import com.GGI.uParty.Screens.LoadingScreen;
 import com.GGI.uParty.Screens.LoginScreen;
 import com.GGI.uParty.Screens.SignUpScreen;
@@ -25,7 +30,7 @@ public class uParty extends Game {
 	private Client client;
 	private boolean debug = false;
 	public Adapter adapter;
-	public String version = "1.0";
+	public String version = "1.0.2";
 	public boolean updateReq = false;
 	
 	/**Constructor to attach adapter interface*/
@@ -81,6 +86,12 @@ public class uParty extends Game {
 		        	 System.out.println("Refreshing parties");
 		        	 System.out.println("Parties: "+o.parties.size());
 		         }
+		         else if(object instanceof Party){
+		        	 Party o = (Party)object;
+		        	 assets.parties.refresh(o);
+		        	 System.out.println("Refreshing parties");
+		        	 //System.out.println("Parties: "+o.parties.size());
+		         }
 		       }
 			
 		}));
@@ -123,6 +134,10 @@ public class uParty extends Game {
 		}catch(Exception e){
 			System.out.println("Send error");
 			connect();
+		}
+		
+		if(s instanceof CreateParty || s instanceof VoteUp || s instanceof VoteDown){
+			send(new Refresh(assets.myProfile));
 		}
 	}
 	

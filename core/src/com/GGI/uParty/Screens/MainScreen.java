@@ -80,7 +80,7 @@ public class MainScreen implements Screen, InputProcessor{
 		newParty.draw(pic, 1);
 		pic.end();
 		
-		if(new Date().getTime()-rTime.getTime()>5000){
+		if(new Date().getTime()-rTime.getTime()>60000){
 			refresh();
 		}
 	}

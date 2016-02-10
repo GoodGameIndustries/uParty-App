@@ -84,4 +84,30 @@ public class PartyList extends ArrayList<PartyModule>{
 		this.clear();
 		this.addAll(p);
 	}
+
+
+	public void refresh(Party o) {
+		boolean update = false;
+		
+		Date d = new Date();
+		for(int i = 0; i < this.size();i++){
+			if(d.getDate()!=get(i).p.d.getDate()){
+				remove(i);
+			}
+			else{
+			if(get(i).p.id.equals(o.id)){
+				remove(i);
+				add(new PartyModule(u,o));
+				update=true;
+				break;
+			}
+			}
+		}
+		if(!update){
+			add(new PartyModule(u,o));
+		}
+		
+		Collections.sort(this);
+		
+	}
 }
