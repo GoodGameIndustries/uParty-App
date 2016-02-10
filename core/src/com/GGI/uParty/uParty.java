@@ -1,5 +1,6 @@
 package com.GGI.uParty;
 
+import java.awt.Point;
 import java.io.IOException;
 
 import com.GGI.uParty.Network.Err;
@@ -11,9 +12,7 @@ import com.GGI.uParty.Network.Sendable;
 import com.GGI.uParty.Screens.LoadingScreen;
 import com.GGI.uParty.Screens.LoginScreen;
 import com.GGI.uParty.Screens.SignUpScreen;
-import com.GGI.uParty.Screens.VersionUpdateScreen;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -127,7 +126,25 @@ public class uParty extends Game {
 		}
 	}
 	
+	/**Uses the haversine formula to calculate the distance
+	 * between the 2 given points
+	 * @param p1
+	 * @param p2
+	 * @return distance
+	 */
+	public double haversineDistance(Point p1, Point p2){
+		return 0;
+		
+	}
 	
+	
+	/**Opens the address given as a parameter as a url for
+	 * searching google maps
+	 * @param address
+	 */
+	public void searchAddress(String address){
+		
+	}
 
 	
 	

@@ -1,5 +1,7 @@
 package com.GGI.uParty.android;
 
+import java.awt.Point;
+
 import com.GGI.uParty.uParty;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -204,6 +206,12 @@ public class AndroidLauncher extends AndroidApplication implements com.GGI.uPart
 	  
 	  inst.sendKeyDownUpSync(KeyEvent.KEYCODE_ENTER);
   }
+
+@Override
+public Point getGPSLocation() {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 
 }  

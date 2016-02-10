@@ -1,5 +1,6 @@
 package com.GGI.uParty;
 
+import java.awt.Point;
 import java.util.Arrays;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
@@ -77,4 +78,10 @@ public class IOSLauncher extends IOSApplication.Delegate implements Adapter {
 	         System.out.println("Interstitial not ready!");
 	     }
 	 }
+
+	@Override
+	public Point getGPSLocation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -2,6 +2,9 @@ package com.GGI.uParty.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
+import java.awt.Point;
+
 import com.GGI.uParty.Adapter;
 import com.GGI.uParty.uParty;
 
@@ -21,6 +24,12 @@ public class DesktopLauncher implements Adapter{
 	public void showOrLoadInterstital() {
 		System.out.println("show ad");
 		
+	}
+
+	@Override
+	public Point getGPSLocation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
