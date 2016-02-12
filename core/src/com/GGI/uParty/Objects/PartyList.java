@@ -99,11 +99,11 @@ public class PartyList extends ArrayList<PartyModule>{
 				remove(i);
 				add(new PartyModule(u,o));
 				update=true;
-				break;
+				//break;
 			}
 			}
 		}
-		if(!update){
+		if(!update&&d.getDate()==o.d.getDate()){
 			add(new PartyModule(u,o));
 		}
 		
