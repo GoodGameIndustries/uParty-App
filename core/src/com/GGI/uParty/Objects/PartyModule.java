@@ -108,7 +108,9 @@ public class PartyModule implements Comparable{
 			u.assets.small.draw(pic, "Location: "+p.where.substring(0, p.where.length()>35?35:p.where.length()), bounds.x+.05f*bounds.width, bounds.y+.32f*bounds.height);
 			if(p.where.length()>35){
 			u.assets.small.draw(pic, p.where.substring(35,p.where.length()>70?70:p.where.length()), bounds.x+.055f*bounds.width, bounds.y+.26f*bounds.height);
+			if(p.where.length()>70){
 			u.assets.small.draw(pic, p.where.substring(70,p.where.length()), bounds.x+.055f*bounds.width, bounds.y+.2f*bounds.height);
+			}
 			}
 			}
 		layout.setText(u.assets.medium, ""+p.vote);
