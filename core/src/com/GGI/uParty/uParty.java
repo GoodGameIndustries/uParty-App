@@ -14,8 +14,10 @@ import com.GGI.uParty.Network.Refresh;
 import com.GGI.uParty.Network.Sendable;
 import com.GGI.uParty.Network.VoteDown;
 import com.GGI.uParty.Network.VoteUp;
+import com.GGI.uParty.Objects.PartyModule;
 import com.GGI.uParty.Screens.LoadingScreen;
 import com.GGI.uParty.Screens.LoginScreen;
+import com.GGI.uParty.Screens.ReportScreen;
 import com.GGI.uParty.Screens.SignUpScreen;
 import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.Client;
@@ -30,7 +32,7 @@ public class uParty extends Game {
 	private Client client;
 	private boolean debug = false;
 	public Adapter adapter;
-	public String version = "1.0.4";
+	public String version = "1.0.5";
 	public boolean updateReq = false;
 	
 	/**Constructor to attach adapter interface*/
@@ -158,6 +160,10 @@ public class uParty extends Game {
 	 * @param address
 	 */
 	public void searchAddress(String address){
+		
+	}
+	public void reportConfirm(PartyModule p) {
+		setScreen(new ReportScreen(this,p));
 		
 	}
 

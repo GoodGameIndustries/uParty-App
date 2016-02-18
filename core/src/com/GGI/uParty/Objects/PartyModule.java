@@ -16,6 +16,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class PartyModule implements Comparable{
@@ -36,9 +38,12 @@ public class PartyModule implements Comparable{
 	
 	public Rectangle voteUpB = new Rectangle();
 	public Rectangle voteDownB = new Rectangle();
+	public Rectangle reportB = new Rectangle();
 	
 	public TextureRegion flippedUp,flippedDown;
 	public boolean locationEnabled = true;
+	private TextButtonStyle buttonStyle;
+	private TextButton report;
 	
 
 	/**This class is a visual representation of a given party
@@ -50,6 +55,15 @@ public class PartyModule implements Comparable{
 		this.u=u;
 		this.p=p;
 		
+		/** Button setup */
+		buttonStyle = new TextButtonStyle();
+			buttonStyle.font=u.assets.small;
+			buttonStyle.fontColor=u.assets.dark;
+			buttonStyle.up=u.assets.buttonStyleUp;
+			buttonStyle.down=u.assets.buttonStyleDown;
+			buttonStyle.checked=u.assets.buttonStyleDown;
+		report = new TextButton("Report",buttonStyle);
+			report.setBounds(reportB.x, reportB.y, reportB.width, reportB.height);
 		
 		bounds = new Rectangle();
 		
@@ -74,10 +88,12 @@ public class PartyModule implements Comparable{
 		if(pic==null){pic = new SpriteBatch();}
 		if(shape==null){shape = new ShapeRenderer();}
 		
-		voteUpB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.625f*bounds.height,.1f*bounds.width,.35f*bounds.height);
-		voteDownB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.075f*bounds.height,.1f*bounds.width,.35f*bounds.height);
+		voteUpB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.675f*bounds.height,.1f*bounds.width,.35f*bounds.height);
+		voteDownB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.225f*bounds.height,.1f*bounds.width,.35f*bounds.height);
+		reportB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.075f*bounds.height,.1f*bounds.width,.1f*bounds.height);
 		voteUp.setBounds(voteUpB.x, voteUpB.y, voteUpB.width, voteUpB.height);
 		voteDown.setBounds(voteDownB.x, voteDownB.y, voteDownB.width, voteDownB.height);
+		report.setBounds(reportB.x, reportB.y, reportB.width, reportB.height);
 		
 		if(p.upVote.contains(u.assets.myProfile)){
 			voteUp.setChecked(true);
@@ -115,9 +131,11 @@ public class PartyModule implements Comparable{
 			}
 		layout.setText(u.assets.medium, ""+p.vote);
 		u.assets.medium.setColor(u.assets.orange);
-		u.assets.medium.draw(pic, ""+p.vote, .9f*w-layout.width/2, bounds.y+bounds.height/2+layout.height/2);
+		u.assets.medium.draw(pic, ""+p.vote, .9f*w-layout.width/2, bounds.y+19*bounds.height/32+layout.height/2);
 		voteUp.draw(pic, 1);
 		voteDown.draw(pic, 1);
+		report.draw(pic, 1);
+		
 		pic.end();
 	}
 	
@@ -128,7 +146,7 @@ public class PartyModule implements Comparable{
 	 */
 	public boolean down(Rectangle touch){
 		if(!Intersector.overlaps(touch, bounds)){return false;}
-		//System.out.println("Down on module");
+		else if(Intersector.overlaps(touch, reportB)){report.toggle();}
 		return true;
 		
 	}
@@ -142,6 +160,7 @@ public class PartyModule implements Comparable{
 		if(!Intersector.overlaps(touch, bounds)){return false;}
 		else if(Intersector.overlaps(touch, voteUpB)){u.send(new VoteUp(p,u.assets.myProfile));}
 		else if(Intersector.overlaps(touch, voteDownB)){u.send(new VoteDown(p,u.assets.myProfile));}
+		else if(Intersector.overlaps(touch, reportB)){report.toggle();u.reportConfirm(this);}
 		else{
 			//u.assets.toolBar.backEnabled=true;
 			//u.setScreen(new PartyViewScreen(u,p));

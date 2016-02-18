@@ -15,9 +15,11 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.utils.Align;
 
@@ -35,9 +37,11 @@ public class SignUpScreen implements Screen, InputProcessor{
 	private Rectangle emailB=new Rectangle(w/8,20*h/32,3*w/4,h/16);
 	private Rectangle passB=new Rectangle(w/8,17*h/32,3*w/4,h/16);
 	private Rectangle cpassB=new Rectangle(w/8,14*h/32,3*w/4,h/16);
-	private Rectangle signUpBounds = new Rectangle(w/8, 5*h/16, 3*w/4, h/16);
+	private Rectangle signUpBounds = new Rectangle(w/8, 4*h/16, 3*w/4, h/16);
 	private Rectangle errB = new Rectangle(0,4*h/16,w,h/16);
 	private Rectangle backBounds = new Rectangle(h/64,61*h/64,h/32,h/32);
+	private Rectangle agreeB = new Rectangle(w/8,11*h/32,w/8,h/16);
+	private Rectangle viewB = new Rectangle(5*w/8,11*h/32,w/4,h/16);
 	
 	private TextFieldStyle style;
 	private TextFieldStyle errorStyle;
@@ -53,6 +57,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 	private TextButtonStyle buttonStyle;
 	private TextButtonStyle plainButtonStyle;
 	private TextButton signUp;
+	private TextButton view;
 	private TextButton back;
 	
 	private Keyboard keyBoard;
@@ -61,6 +66,9 @@ public class SignUpScreen implements Screen, InputProcessor{
 	public String error = "";
 	
 	private int selector = 0;
+	
+	private CheckBoxStyle checkStyle;
+	private CheckBox agree;
 	
 	public SignUpScreen(uParty u) {
 		this.u=u;
@@ -76,6 +84,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 		errorStyle = new TextFieldStyle();
 		errorStyle.font = u.assets.medium;
 		errorStyle.fontColor=Color.RED;
+		
 		
 		name=new TextField(n,style);name.setMessageText("First Name");name.setBounds(nameB.x,nameB.y,nameB.width,nameB.height);name.setAlignment(Align.center);
 		month=new TextField(m,style);month.setMessageText("MM");month.setBounds(monthB.x,monthB.y,monthB.width,monthB.height);month.setAlignment(Align.center);
@@ -99,9 +108,23 @@ public class SignUpScreen implements Screen, InputProcessor{
 			plainButtonStyle.checkedFontColor = Color.GRAY;
 		signUp = new TextButton("Sign Up",buttonStyle);
 			signUp.setBounds(signUpBounds.x,signUpBounds.y,signUpBounds.width,signUpBounds.height);
+		view = new TextButton("View EULA",buttonStyle);
+			view.setBounds(viewB.x,viewB.y,viewB.width,viewB.height);
 		back = new TextButton("<",plainButtonStyle);
 			back.setBounds(backBounds.x,backBounds.y,backBounds.width,backBounds.height);
 		
+			
+			/** CheckBox setup */
+			checkStyle = new CheckBoxStyle();
+				checkStyle.up=u.assets.checkBoxStyleOff;
+				checkStyle.down=u.assets.checkBoxStyleOn;
+				checkStyle.checked=u.assets.checkBoxStyleOn;
+				checkStyle.font=u.assets.small;
+				checkStyle.fontColor=Color.WHITE;
+			agree = new CheckBox("I Agree", checkStyle);
+				agree.align(Align.center);
+				agree.setBounds(agreeB.x,agreeB.y,agreeB.width,agreeB.height);
+				
 	}
 
 	@Override
@@ -121,6 +144,12 @@ public class SignUpScreen implements Screen, InputProcessor{
 		layout.setText(u.assets.large, "Sign Up");
 		u.assets.large.draw(pic, "Sign Up", w/2-layout.width/2, h-1.1f*layout.height);
 		
+		layout.setText(u.assets.small, "to the terms and conditions described");
+		u.assets.small.draw(pic, "to the terms and conditions described", w/7+h/16,12*h/32+9*layout.height/8);
+		
+		layout.setText(u.assets.small, "at http://upartyapp.com/uparty/eula/");
+		u.assets.small.draw(pic, "at http://upartyapp.com/uparty/eula/", w/6.8f+h/16,12*h/32-layout.height/8);
+		
 		name.draw(pic, 1);
 		month.draw(pic, 1);
 		day.draw(pic, 1);
@@ -131,6 +160,8 @@ public class SignUpScreen implements Screen, InputProcessor{
 		signUp.draw(pic, 1);
 		err.draw(pic,1);
 		back.draw(pic, 1);
+		agree.draw(pic, 1);
+		view.draw(pic, 1);
 		pic.end();
 		
 		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
@@ -263,6 +294,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 		keyBoard.touchDown(touch);
 		if(Intersector.overlaps(touch, signUpBounds)){signUp.toggle();}
 		else if (Intersector.overlaps(touch, backBounds)){back.toggle();}
+		else if (Intersector.overlaps(touch, viewB)){view.toggle();}
 		return true;
 	}
 
@@ -286,7 +318,10 @@ public class SignUpScreen implements Screen, InputProcessor{
 		else if(Intersector.overlaps(touch, passB)){selector = 6;keyBoard.isVisible=(true);}
 		else if(Intersector.overlaps(touch, cpassB)){selector = 7;keyBoard.isVisible=(true);}
 		else if (Intersector.overlaps(touch, backBounds)){back.toggle();u.setScreen(new LoginScreen(u));}
+		else if (Intersector.overlaps(touch, agreeB)){agree.toggle();}
+		else if (Intersector.overlaps(touch, viewB)){Gdx.net.openURI("http://upartyapp.com/uparty/eula/"); view.toggle();}
 		else if(Intersector.overlaps(touch, signUpBounds)){signUp.toggle();
+		
 			//u.send(new Sendable());//for testing only	
 			if(n.length()>0&&m.length()>0&&d.length()>0&&y.length()>0&&e.length()>0&&p.length()>0&&cp.length()>0){
 				
@@ -301,7 +336,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 					error = "Invalid Date";
 				}
 				
-				if(e.endsWith(".edu")&&p.equals(cp)){
+				if(e.endsWith(".edu")&&p.equals(cp)&&agree.isChecked()){
 					SignUp s = new SignUp();
 					s.name=n;
 					s.date = bday;
