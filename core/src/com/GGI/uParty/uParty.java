@@ -32,7 +32,7 @@ public class uParty extends Game {
 	private Client client;
 	private boolean debug = false;
 	public Adapter adapter;
-	public String version = "1.0.5";
+	public String version = "1.0.6";
 	public boolean updateReq = false;
 	
 	/**Constructor to attach adapter interface*/
