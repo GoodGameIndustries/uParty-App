@@ -40,7 +40,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 	private Rectangle signUpBounds = new Rectangle(w/8, 4*h/16, 3*w/4, h/16);
 	private Rectangle errB = new Rectangle(0,4*h/16,w,h/16);
 	private Rectangle backBounds = new Rectangle(h/64,61*h/64,h/32,h/32);
-	private Rectangle agreeB = new Rectangle(w/8,11*h/32,w/8,h/16);
+	private Rectangle agreeB = new Rectangle(w/8,11*h/32,h/16,h/16);
 	private Rectangle viewB = new Rectangle(11*w/16,11*h/32,3*w/16,h/16);
 	
 	private TextFieldStyle style;

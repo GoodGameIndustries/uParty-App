@@ -15,7 +15,7 @@ public class DesktopLauncher implements Adapter{
 	
 	public DesktopLauncher(){
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width=502;
+		config.width=500;
 		config.height=900;
 		new LwjglApplication(new uParty(this), config);
 	}

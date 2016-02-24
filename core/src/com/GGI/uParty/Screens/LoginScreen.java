@@ -145,7 +145,7 @@ public class LoginScreen implements Screen,InputProcessor{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		pic.begin();
-		pic.draw(u.assets.logo1024,w/3,h-(w/2),w/3,w/3);
+		pic.draw(u.assets.logo1024,(w/2)-h/10,h-(h/3),h/5,h/5);
 		
 		u.assets.large.setColor(u.assets.orange);
 		layout.setText(u.assets.large, intro.substring(0, s));
