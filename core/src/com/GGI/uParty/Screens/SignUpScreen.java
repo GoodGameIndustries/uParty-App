@@ -30,7 +30,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 	private SpriteBatch pic = new SpriteBatch();
 	private float w = Gdx.graphics.getWidth(),h = Gdx.graphics.getHeight();
 	
-	private Rectangle nameB=new Rectangle(w/4,13*h/16,w/2,h/16);
+	private Rectangle nameB=new Rectangle(w/4,23*h/32,w/2,h/16);
 	private Rectangle monthB=new Rectangle(w/4,23*h/32,w/8,h/16);
 	private Rectangle dayB=new Rectangle(13*w/32,23*h/32,w/8,h/16);
 	private Rectangle yearB=new Rectangle(18*w/32,23*h/32,3*w/16,h/16);
@@ -38,7 +38,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 	private Rectangle passB=new Rectangle(w/8,17*h/32,3*w/4,h/16);
 	private Rectangle cpassB=new Rectangle(w/8,14*h/32,3*w/4,h/16);
 	private Rectangle signUpBounds = new Rectangle(w/8, 4*h/16, 3*w/4, h/16);
-	private Rectangle errB = new Rectangle(0,4*h/16,w,h/16);
+	private Rectangle errB = new Rectangle(0,2*h/16,w,h/16);
 	private Rectangle backBounds = new Rectangle(h/64,61*h/64,h/32,h/32);
 	private Rectangle agreeB = new Rectangle(w/8,11*h/32,h/16,h/16);
 	private Rectangle viewB = new Rectangle(11*w/16,11*h/32,3*w/16,h/16);
@@ -142,7 +142,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 		pic.begin();
 		u.assets.large.setColor(u.assets.orange);
 		layout.setText(u.assets.large, "Sign Up");
-		u.assets.large.draw(pic, "Sign Up", w/2-layout.width/2, h-1.1f*layout.height);
+		u.assets.large.draw(pic, "Sign Up", w/2-layout.width/2, h-4f*layout.height);
 		
 		layout.setText(u.assets.small, "to the terms and conditions described");
 		u.assets.small.draw(pic, "to the terms and conditions described", w/7+h/16,12*h/32+9*layout.height/8);
@@ -151,9 +151,9 @@ public class SignUpScreen implements Screen, InputProcessor{
 		u.assets.small.draw(pic, "at http://upartyapp.com/uparty/eula/", w/6.8f+h/16,12*h/32-layout.height/8);
 		
 		name.draw(pic, 1);
-		month.draw(pic, 1);
-		day.draw(pic, 1);
-		year.draw(pic, 1);
+		//month.draw(pic, 1);
+		//day.draw(pic, 1);
+		//year.draw(pic, 1);
 		email.draw(pic, 1);
 		pass.draw(pic, 1);
 		cpass.draw(pic, 1);
@@ -323,14 +323,14 @@ public class SignUpScreen implements Screen, InputProcessor{
 		else if(Intersector.overlaps(touch, signUpBounds)){signUp.toggle();
 		
 			//u.send(new Sendable());//for testing only	
-			if(n.length()>0&&m.length()>0&&d.length()>0&&y.length()>0&&e.length()>0&&p.length()>0&&cp.length()>0){
+			if(n.length()>0&&e.length()>0&&p.length()>0&&cp.length()>0){
 				
 				Date bday = null;
 				try{
 					bday = new Date();
-					bday.setMonth(Integer.parseInt(m));
-					bday.setDate(Integer.parseInt(d));
-					bday.setYear(Integer.parseInt(y));
+					//bday.setMonth(Integer.parseInt(m));
+					//bday.setDate(Integer.parseInt(d));
+					//bday.setYear(Integer.parseInt(y));
 					
 				}catch(Exception e){
 					error = "Invalid Date";
