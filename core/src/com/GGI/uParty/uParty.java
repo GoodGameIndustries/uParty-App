@@ -2,6 +2,7 @@ package com.GGI.uParty;
 
 import java.awt.Point;
 import java.io.IOException;
+import java.util.Date;
 
 import com.GGI.uParty.Network.CreateParty;
 import com.GGI.uParty.Network.Err;
@@ -34,6 +35,8 @@ public class uParty extends Game {
 	public Adapter adapter;
 	public String version = "1.0.8";
 	public boolean updateReq = false;
+	public Date lastSent = new Date();
+	
 	
 	/**Constructor to attach adapter interface*/
 	public uParty(Adapter adapter){
@@ -118,6 +121,11 @@ public class uParty extends Game {
 	
 	/**Sends a sendable object to the server*/
 	public void send(Sendable s){
+		Date d=new Date();
+		int waitT=0;
+		waitT=(s instanceof VoteUp ||s instanceof VoteDown?30:0);
+		if(Math.abs(d.getTime()-lastSent.getTime())>waitT){
+			lastSent=d;
 		if(s instanceof Login){
 			Login l = (Login)s;
 			l.version=this.version;
@@ -140,6 +148,7 @@ public class uParty extends Game {
 		
 		if(s instanceof CreateParty || s instanceof VoteUp || s instanceof VoteDown){
 			send(new Refresh(assets.myProfile));
+		}
 		}
 	}
 	
