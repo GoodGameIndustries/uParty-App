@@ -28,6 +28,7 @@ public class Assets {
 	/**Images*/
 	public Texture logo1024;
 	public TextureRegionDrawable textStyleBorder;
+	public TextureRegionDrawable focusTextStyleBorder;
 	public TextureRegionDrawable buttonStyleUp;
 	public TextureRegionDrawable buttonStyleDown;
 	public TextureRegionDrawable keyStyleUp;
@@ -73,6 +74,7 @@ public class Assets {
 	private void loadImages() {
 		logo1024 = new Texture(Gdx.files.internal("1024.png"));
 		textStyleBorder = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/TextStyleBorder.png"))));
+		focusTextStyleBorder = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/FocusTextStyleBorder.png"))));
 		buttonStyleUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/ButtonStyleUp.png"))));
 		buttonStyleDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/ButtonStyleDown.png"))));
 		keyStyleUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Images/KeyStyleUp.png"))));

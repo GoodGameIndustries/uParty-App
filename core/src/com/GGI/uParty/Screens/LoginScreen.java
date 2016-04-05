@@ -16,11 +16,13 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.OnscreenKeyboard;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.utils.Align;
 
@@ -47,6 +49,8 @@ public class LoginScreen implements Screen,InputProcessor{
 	
 	private Keyboard keyBoard;
 	
+	public OnscreenKeyboard kB;
+	
 	private TextFieldStyle style;
 	private TextField email;
 	private TextField pass;
@@ -64,6 +68,8 @@ public class LoginScreen implements Screen,InputProcessor{
 	private CheckBoxStyle checkStyle;
 	private CheckBox remember;
 	
+	private Stage stage = new Stage();
+	
 	public LoginScreen(uParty u){
 		this.u=u;
 		keyBoard = new Keyboard(u,this);
@@ -74,10 +80,13 @@ public class LoginScreen implements Screen,InputProcessor{
 			style.font=u.assets.medium;
 			style.fontColor=u.assets.orange;
 			style.background=u.assets.textStyleBorder;
+			style.focusedBackground=u.assets.focusTextStyleBorder;
+			
 		email = new TextField(e,style);
 			email.setMessageText("Email (must be .edu)");
 			email.setBounds(emailBounds.x,emailBounds.y,emailBounds.width,emailBounds.height);
 			email.setAlignment(Align.center);
+			
 			
 		pass = new TextField(p,style);
 			pass.setMessageText("Password");
@@ -120,13 +129,22 @@ public class LoginScreen implements Screen,InputProcessor{
 		remember = new CheckBox("Remember", checkStyle);
 			remember.align(Align.center);
 			remember.setBounds(rememberBounds.x,rememberBounds.y,rememberBounds.width,rememberBounds.height);
-			
+		
+		stage.addActor(email);
+		stage.addActor(pass);
+		stage.addActor(login);
+		stage.addActor(signUp);
+		stage.addActor(forgot);
+		stage.addActor(err);
+		stage.addActor(remember);
+		
 	}
 	
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
 		//u.assets.myProfile=null;
+		
 		
 	}
 
@@ -167,6 +185,7 @@ public class LoginScreen implements Screen,InputProcessor{
 		remember.draw(pic, 1);
 		forgot.draw(pic, 1);
 		err.draw(pic, 1);
+		//stage.draw();
 		pic.end();
 		
 		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
@@ -265,18 +284,18 @@ public class LoginScreen implements Screen,InputProcessor{
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		//Gdx.input.setOnscreenKeyboardVisible(false);
+		
 		
 		
 		screenY=(int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
-		if(!Intersector.overlaps(touch, keyBoard.bounds)){selected = 0;keyBoard.isVisible = false;}
+		if(!Intersector.overlaps(touch, keyBoard.bounds)){selected = 0;stage.setKeyboardFocus(null);keyBoard.isVisible = false;}
 		else{
 			keyBoard.touchUp(touch);
 		}
 		if(!keyBoard.isVisible){
-		if(Intersector.overlaps(touch, emailBounds)){selected = 1;keyBoard.isVisible = true;}
-		else if(Intersector.overlaps(touch, passBounds)){selected = 2;keyBoard.isVisible = true;}
+		if(Intersector.overlaps(touch, emailBounds)){selected = 1;keyBoard.isVisible = true;stage.setKeyboardFocus(email);}
+		else if(Intersector.overlaps(touch, passBounds)){selected = 2;keyBoard.isVisible = true;stage.setKeyboardFocus(pass);}
 		else if(Intersector.overlaps(touch, loginBounds)){login.toggle();Login l = new Login();l.email=e;l.pass=p;l.version=u.version;u.send(l);
 			if(remember.isChecked()){
 				System.out.println("Save attempt");

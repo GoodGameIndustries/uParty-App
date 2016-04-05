@@ -1,6 +1,5 @@
 package com.GGI.uParty.Screens;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import com.GGI.uParty.uParty;
@@ -16,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -59,6 +59,8 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 	
 	public String n="",d="",hr="",m="",wr="";
 	
+	public Stage stage;
+	
 	public CreatePartyScreen(uParty u) {
 		this.u=u;
 		
@@ -69,10 +71,12 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 			style.font=u.assets.medium;
 			style.fontColor=u.assets.orange;
 			style.background=u.assets.textStyleBorder;
+			style.focusedBackground=u.assets.focusTextStyleBorder;
 		styleS = new TextFieldStyle();
 			styleS.font=u.assets.small;
 			styleS.fontColor=u.assets.orange;
 			styleS.background=u.assets.textStyleBorder;
+			styleS.focusedBackground=u.assets.focusTextStyleBorder;
 		name = new TextField(n,style);
 			name.setBounds(nameB.x, nameB.y, nameB.width, nameB.height);
 			name.setMessageText("Event Name");
@@ -114,6 +118,16 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 			plainButtonStyle.checkedFontColor = Color.GRAY;
 		back = new TextButton("<",plainButtonStyle);
 			back.setBounds(backBounds.x,backBounds.y,backBounds.width,backBounds.height);
+			
+		stage = new Stage();
+		stage.addActor(name);
+		stage.addActor(hour);
+		stage.addActor(min);
+		stage.addActor(description);
+		stage.addActor(where);
+		stage.addActor(tSwitch);
+		stage.addActor(createParty);
+		stage.addActor(back);
 	}
 
 	@Override
@@ -129,14 +143,15 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 		if(isPm){tSwitch.setText("PM");}else{tSwitch.setText("AM");}
 		
 		pic.begin();
+		//stage.draw();
 		name.draw(pic, 1);
 		hour.draw(pic, 1);
 		min.draw(pic, 1);
 		description.draw(pic, 1);
 		where.draw(pic, 1);
 		tSwitch.draw(pic, 1);
-		createParty.draw(pic,1);
-		back.draw(pic, 1);
+		createParty.draw(pic, 1);
+		back.draw(pic,1);
 		pic.end();
 		
 		if(keyBoard.isVisible||keyBoard.theta!=0){keyBoard.render();}
@@ -292,7 +307,7 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 		screenY = (int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
 		
-		if(!Intersector.overlaps(touch, keyBoard.bounds)){select = 0;keyBoard.isVisible = false;}
+		if(!Intersector.overlaps(touch, keyBoard.bounds)){select = 0;keyBoard.isVisible = false;stage.setKeyboardFocus(null);}
 		else{
 			keyBoard.touchUp(touch);
 		}
@@ -320,11 +335,11 @@ public class CreatePartyScreen implements Screen,InputProcessor{
 			}
 		}
 		
-		if(Intersector.overlaps(touch,nameB)){select = 1;keyBoard.isVisible=(true);}
-		if(Intersector.overlaps(touch,hourB)){select = 2;keyBoard.isVisible=(true);}
-		if(Intersector.overlaps(touch,minB)){select = 3;keyBoard.isVisible=(true);}
-		if(Intersector.overlaps(touch,descriptionB)){select = 4;keyBoard.isVisible=(true);}
-		if(Intersector.overlaps(touch,whereB)){select = 5;keyBoard.isVisible=(true);}
+		if(Intersector.overlaps(touch,nameB)){select = 1;keyBoard.isVisible=(true);stage.setKeyboardFocus(name);}
+		if(Intersector.overlaps(touch,hourB)){select = 2;keyBoard.isVisible=(true);stage.setKeyboardFocus(hour);}
+		if(Intersector.overlaps(touch,minB)){select = 3;keyBoard.isVisible=(true);stage.setKeyboardFocus(min);}
+		if(Intersector.overlaps(touch,descriptionB)){select = 4;keyBoard.isVisible=(true);stage.setKeyboardFocus(description);}
+		if(Intersector.overlaps(touch,whereB)){select = 5;keyBoard.isVisible=(true);stage.setKeyboardFocus(where);}
 		
 		return true;
 	}

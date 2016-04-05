@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -43,6 +44,8 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 	
 	private Keyboard keyBoard;
 	
+	private Stage stage;
+	
 	/**This screen allows you to type in your confirmation code
 	 * that allows us to make sure it is a real email
 	 * @param u
@@ -57,6 +60,7 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 			style.font=u.assets.medium;
 			style.fontColor=u.assets.orange;
 			style.background=u.assets.textStyleBorder;
+			style.focusedBackground=u.assets.focusTextStyleBorder;
 		confirmCode = new TextField(code,style);
 			confirmCode.setMessageText("Confirmation Code");
 			confirmCode.setBounds(codeBounds.x, codeBounds.y, codeBounds.width, codeBounds.height);
@@ -73,6 +77,11 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 			resend.setBounds(resendBounds.x, resendBounds.y, resendBounds.width, resendBounds.height);
 		cont = new TextButton("Continue",buttonStyle);
 			cont.setBounds(contBounds.x, contBounds.y, contBounds.width, contBounds.height);
+		
+		stage = new Stage();
+		stage.addActor(confirmCode);
+		stage.addActor(resend);
+		stage.addActor(cont);
 	}
 	
 	/**when the screen is first shown this method is called
@@ -103,6 +112,7 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 		layout.setText(u.assets.medium, message);
 		u.assets.medium.draw(pic, message, w/2-layout.width/2, h/4);
 		
+		//stage.draw();
 		confirmCode.draw(pic, 1);
 		resend.draw(pic, 1);
 		cont.draw(pic, 1);
@@ -187,7 +197,7 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 		
 		//selected = 0;
 		
-		if(!Intersector.overlaps(touch, keyBoard.bounds)){selected = 0;keyBoard.isVisible = false;}
+		if(!Intersector.overlaps(touch, keyBoard.bounds)){selected = 0;keyBoard.isVisible = false;stage.setKeyboardFocus(null);}
 		else{
 			keyBoard.touchUp(touch);
 		}
@@ -198,7 +208,7 @@ public class ConfirmationScreen implements Screen, InputProcessor{
 			}
 			
 		else if(Intersector.overlaps(touch, resendBounds)){resend.toggle();message = "New code sent!";u.send(new ResendConfirmation(u.assets.myProfile.email));}
-		else if(Intersector.overlaps(touch, codeBounds)){selected = 1;keyBoard.isVisible=true;}
+		else if(Intersector.overlaps(touch, codeBounds)){selected = 1;keyBoard.isVisible=true;stage.setKeyboardFocus(confirmCode);}
 		return true;
 	}
 

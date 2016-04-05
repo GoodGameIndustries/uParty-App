@@ -3,7 +3,6 @@ package com.GGI.uParty.Screens;
 import java.util.Date;
 
 import com.GGI.uParty.uParty;
-import com.GGI.uParty.Network.Sendable;
 import com.GGI.uParty.Network.SignUp;
 import com.GGI.uParty.Objects.Keyboard;
 import com.badlogic.gdx.Gdx;
@@ -15,11 +14,12 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.utils.Align;
 
@@ -70,6 +70,8 @@ public class SignUpScreen implements Screen, InputProcessor{
 	private CheckBoxStyle checkStyle;
 	private CheckBox agree;
 	
+	private Stage stage;
+	
 	public SignUpScreen(uParty u) {
 		this.u=u;
 		
@@ -80,6 +82,7 @@ public class SignUpScreen implements Screen, InputProcessor{
 		style.font=u.assets.medium;
 		style.fontColor=u.assets.orange;
 		style.background=u.assets.textStyleBorder;
+		style.focusedBackground=u.assets.focusTextStyleBorder;
 		
 		errorStyle = new TextFieldStyle();
 		errorStyle.font = u.assets.medium;
@@ -125,6 +128,17 @@ public class SignUpScreen implements Screen, InputProcessor{
 				agree.align(Align.center);
 				agree.setBounds(agreeB.x,agreeB.y,agreeB.width,agreeB.height);
 				
+				
+			stage = new Stage();
+			stage.addActor(name);
+			stage.addActor(email);
+			stage.addActor(pass);
+			stage.addActor(cpass);
+			stage.addActor(signUp);
+			stage.addActor(err);
+			stage.addActor(back);
+			stage.addActor(agree);
+			stage.addActor(view);
 	}
 
 	@Override
@@ -140,10 +154,12 @@ public class SignUpScreen implements Screen, InputProcessor{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		pic.begin();
+		
 		u.assets.large.setColor(u.assets.orange);
 		layout.setText(u.assets.large, "Sign Up");
 		u.assets.large.draw(pic, "Sign Up", w/2-layout.width/2, h-4f*layout.height);
 		
+		u.assets.small.setColor(u.assets.orange);
 		layout.setText(u.assets.small, "to the terms and conditions described");
 		u.assets.small.draw(pic, "to the terms and conditions described", w/7+h/16,12*h/32+9*layout.height/8);
 		
@@ -151,14 +167,11 @@ public class SignUpScreen implements Screen, InputProcessor{
 		u.assets.small.draw(pic, "at http://upartyapp.com/uparty/eula/", w/6.8f+h/16,12*h/32-layout.height/8);
 		
 		name.draw(pic, 1);
-		//month.draw(pic, 1);
-		//day.draw(pic, 1);
-		//year.draw(pic, 1);
 		email.draw(pic, 1);
 		pass.draw(pic, 1);
 		cpass.draw(pic, 1);
 		signUp.draw(pic, 1);
-		err.draw(pic,1);
+		err.draw(pic, 1);
 		back.draw(pic, 1);
 		agree.draw(pic, 1);
 		view.draw(pic, 1);
@@ -304,19 +317,19 @@ public class SignUpScreen implements Screen, InputProcessor{
 		screenY=(int) (h-screenY);
 		Rectangle touch = new Rectangle(screenX,screenY,1,1);
 		
-		if(!Intersector.overlaps(touch, keyBoard.bounds)){selector = 0;keyBoard.isVisible = false;}
+		if(!Intersector.overlaps(touch, keyBoard.bounds)){selector = 0;keyBoard.isVisible = false;stage.setKeyboardFocus(null);}
 		else{
 			keyBoard.touchUp(touch);
 		}
 		
 		if(!keyBoard.isVisible){
-		if(Intersector.overlaps(touch, nameB)){selector = 1;keyBoard.isVisible=(true);}
-		else if(Intersector.overlaps(touch, monthB)){selector = 2;keyBoard.isVisible=(true);}
-		else if(Intersector.overlaps(touch, dayB)){selector = 3;keyBoard.isVisible=(true);}
-		else if(Intersector.overlaps(touch, yearB)){selector = 4;keyBoard.isVisible=(true);}
-		else if(Intersector.overlaps(touch, emailB)){selector = 5;keyBoard.isVisible=(true);}
-		else if(Intersector.overlaps(touch, passB)){selector = 6;keyBoard.isVisible=(true);}
-		else if(Intersector.overlaps(touch, cpassB)){selector = 7;keyBoard.isVisible=(true);}
+		if(Intersector.overlaps(touch, nameB)){selector = 1;keyBoard.isVisible=(true);stage.setKeyboardFocus(name);}
+		//else if(Intersector.overlaps(touch, monthB)){selector = 2;keyBoard.isVisible=(true);}
+		//else if(Intersector.overlaps(touch, dayB)){selector = 3;keyBoard.isVisible=(true);}
+		//else if(Intersector.overlaps(touch, yearB)){selector = 4;keyBoard.isVisible=(true);}
+		else if(Intersector.overlaps(touch, emailB)){selector = 5;keyBoard.isVisible=(true);stage.setKeyboardFocus(email);}
+		else if(Intersector.overlaps(touch, passB)){selector = 6;keyBoard.isVisible=(true);stage.setKeyboardFocus(pass);}
+		else if(Intersector.overlaps(touch, cpassB)){selector = 7;keyBoard.isVisible=(true);stage.setKeyboardFocus(cpass);}
 		else if (Intersector.overlaps(touch, backBounds)){back.toggle();u.setScreen(new LoginScreen(u));}
 		else if (Intersector.overlaps(touch, agreeB)){agree.toggle();}
 		else if (Intersector.overlaps(touch, viewB)){Gdx.net.openURI("http://upartyapp.com/uparty/eula/"); view.toggle();}
