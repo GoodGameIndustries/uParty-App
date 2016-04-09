@@ -77,7 +77,7 @@ public class PartyList extends ArrayList<PartyModule>{
 		ArrayList<PartyModule> p = new ArrayList<PartyModule>();
 		Date d = new Date();
 		for(int i = 0; i < parties.size();i++){
-			if(d.getDate()==parties.get(i).d.getDate()){
+			if(d.getDate()==parties.get(i).startD.getDate()){
 			p.add(new PartyModule(u,parties.get(i)));}
 		}
 		Collections.sort(p);
@@ -91,19 +91,17 @@ public class PartyList extends ArrayList<PartyModule>{
 		
 		Date d = new Date();
 		for(int i = 0; i < this.size();i++){
-			if(d.getDate()!=get(i).p.d.getDate()){
-				remove(i);
-			}
-			else{
+			
+			
 			if(get(i).p.id.equals(o.id)){
 				remove(i);
 				add(new PartyModule(u,o));
 				update=true;
 				//break;
 			}
-			}
+			
 		}
-		if(!update&&d.getDate()==o.d.getDate()){
+		if(!update){
 			add(new PartyModule(u,o));
 		}
 		

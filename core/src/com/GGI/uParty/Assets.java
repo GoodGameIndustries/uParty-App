@@ -23,7 +23,8 @@ public class Assets {
 	
 	/**Colors*/
 	public Color orange = new Color(247f/255f,148f/255f,29f/255f,1f);
-	public Color dark = new Color(.1f,.1f,.1f,1);
+	public Color dark = new Color(.05f,.05f,.05f,1);
+	public Color darkL = new Color(.1f,.1f,.1f,1);;
 	
 	/**Images*/
 	public Texture logo1024;
@@ -43,6 +44,7 @@ public class Assets {
 	public BitmapFont small;
 	public BitmapFont medium;
 	public BitmapFont large;
+	
 	
 	/**Class used to organize and load all necessary files*/
 	public Assets(uParty u){

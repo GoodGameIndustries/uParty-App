@@ -70,7 +70,7 @@ public class MainScreen implements Screen, InputProcessor{
 	@Override
 	public void render(float delta) {
 		parties = u.assets.parties;
-		Gdx.gl.glClearColor(.1f, .1f, .1f, 1);
+		Gdx.gl.glClearColor(.05f,.05f,.05f,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		parties.render(scrolled);
 		

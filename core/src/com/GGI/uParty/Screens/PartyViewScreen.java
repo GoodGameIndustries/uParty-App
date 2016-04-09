@@ -13,10 +13,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
+import com.badlogic.gdx.utils.Align;
 
 /**
  * @author Emmett
@@ -32,18 +36,23 @@ public class PartyViewScreen implements Screen,InputProcessor{
 	private SpriteBatch pic;
 	private ShapeRenderer shape;
 	
-	private Rectangle backBounds = new Rectangle(h/64,61*h/64,h/32,h/32);
+	private Rectangle backBounds = new Rectangle(w/36,61*h/64,w/18,h/32);
+	private Rectangle commentB = new Rectangle(0,.895f*h,w,.05f*h);
 	
 	private TextButtonStyle plainButtonStyle;
 	
 	private TextButton back;
 	private PartyModule pModule;
+	private TextField comment;
+	private TextFieldStyle style;
+	private LabelStyle grey;
+	private Label noComments;
 	
 	public PartyViewScreen(uParty u, Party p){
 		this.u=u;
 		this.p=p;
 		this.pModule=new PartyModule(u,p);
-		pModule.bounds=new Rectangle(0,h/2,w,h/2-.05f*h);
+		pModule.bounds=new Rectangle(0,h/2,w,h/2-.1f*h);
 		pModule.locationEnabled=true;
 		
 		plainButtonStyle = new TextButtonStyle();
@@ -52,6 +61,23 @@ public class PartyViewScreen implements Screen,InputProcessor{
 			plainButtonStyle.checkedFontColor = Color.GRAY;
 		back = new TextButton("<",plainButtonStyle);
 			back.setBounds(backBounds.x,backBounds.y,backBounds.width,backBounds.height);
+			
+		style = new TextFieldStyle();
+			style.font=u.assets.small;
+			style.fontColor=Color.WHITE;
+			style.background=u.assets.textStyleBorder;
+			style.focusedBackground=u.assets.focusTextStyleBorder;
+		comment = new TextField("",style);
+			comment.setAlignment(Align.center);
+			comment.setMessageText("Write a comment...");
+			comment.setBounds(commentB.x, commentB.y, commentB.width, commentB.height);
+		
+		grey = new LabelStyle();
+			grey.font=u.assets.large;
+			grey.fontColor=Color.DARK_GRAY;
+		noComments = new Label("No Comments",grey);
+			noComments.setAlignment(Align.center);
+			noComments.setBounds(w/4, h/4, w/2, h/3);
 	}
 	
 	@Override
@@ -63,7 +89,7 @@ public class PartyViewScreen implements Screen,InputProcessor{
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(.1f, .1f, .1f, 1);
+		Gdx.gl.glClearColor(.05f, .05f, .05f, 05);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		for(int i = 0; i < u.assets.parties.size();i++){
@@ -72,13 +98,21 @@ public class PartyViewScreen implements Screen,InputProcessor{
 		}
 		
 		this.pModule=new PartyModule(u,p);
-		pModule.bounds=new Rectangle(0,h/2,w,h/2-.05f*h);
+		pModule.bounds=new Rectangle(0,3*h/4-.105f*h,w,h/4);
 		pModule.locationEnabled=true;
+		
+		
+	
+		pic.begin();
+		comment.draw(pic, 1);
+		
+		if(p.comments.size()<=0){
+			noComments.draw(pic, 1);
+		}
 		
 		pModule.render();
 		u.assets.toolBar.render();
-	
-		
+		pic.end();
 		
 	
 	}

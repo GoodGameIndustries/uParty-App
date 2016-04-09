@@ -7,7 +7,6 @@ import com.GGI.uParty.Network.VoteUp;
 import com.GGI.uParty.Screens.PartyViewScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,6 +15,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -38,12 +39,25 @@ public class PartyModule implements Comparable{
 	
 	public Rectangle voteUpB = new Rectangle();
 	public Rectangle voteDownB = new Rectangle();
+	public Rectangle titleB = new Rectangle();
+	public Rectangle descriptionB = new Rectangle();
+	public Rectangle whereB = new Rectangle();
+	public Rectangle startB = new Rectangle();
+	public Rectangle endB = new Rectangle();
 	public Rectangle reportB = new Rectangle();
 	
 	public TextureRegion flippedUp,flippedDown;
 	public boolean locationEnabled = true;
 	private TextButtonStyle buttonStyle;
 	private TextButton report;
+	
+	private LabelStyle styleLS;
+	private LabelStyle styleLM;
+	private Label title;
+	private Label description;
+	private Label where;
+	private Label start;
+	private Label end;
 	
 
 	/**This class is a visual representation of a given party
@@ -54,6 +68,25 @@ public class PartyModule implements Comparable{
 	public PartyModule(uParty u,Party p){
 		this.u=u;
 		this.p=p;
+		
+		/** Label setup*/
+		styleLS = new LabelStyle();
+			styleLS.font=u.assets.small;
+			styleLS.fontColor=Color.WHITE;
+		
+		styleLM = new LabelStyle();
+			styleLM.font=u.assets.medium;
+			styleLM.fontColor=u.assets.orange;
+		
+		title = new Label(p.name,styleLM);
+		start = new Label("Event Start: "+p.startD.toString(),styleLS);
+		end = new Label("Event End: "+p.endD.toString(),styleLS);
+		where = new Label("Location: "+p.where,styleLS);
+			where.setWrap(p.where.length()>40?true:false);
+		description = new Label("Description: "+p.description,styleLS);
+			description.setWrap(p.description.length()>40?true:false);
+			
+			
 		
 		/** Button setup */
 		buttonStyle = new TextButtonStyle();
@@ -88,12 +121,22 @@ public class PartyModule implements Comparable{
 		if(pic==null){pic = new SpriteBatch();}
 		if(shape==null){shape = new ShapeRenderer();}
 		
+		titleB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.85f*bounds.height,.5f*bounds.width,.1f*bounds.height);
+		startB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.78f*bounds.height,.5f*bounds.width,.05f*bounds.height);
+		endB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.71f*bounds.height,.5f*bounds.width,.05f*bounds.height);
+		descriptionB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.42f*bounds.height,.5f*bounds.width,.2f*bounds.height);
+		whereB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.13f*bounds.height,.5f*bounds.width,.2f*bounds.height);
 		voteUpB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.675f*bounds.height,.1f*bounds.width,.35f*bounds.height);
 		voteDownB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.225f*bounds.height,.1f*bounds.width,.35f*bounds.height);
 		reportB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.075f*bounds.height,.1f*bounds.width,.1f*bounds.height);
 		voteUp.setBounds(voteUpB.x, voteUpB.y, voteUpB.width, voteUpB.height);
 		voteDown.setBounds(voteDownB.x, voteDownB.y, voteDownB.width, voteDownB.height);
 		report.setBounds(reportB.x, reportB.y, reportB.width, reportB.height);
+		title.setBounds(titleB.x, titleB.y, titleB.width, titleB.height);
+		start.setBounds(startB.x, startB.y, startB.width, startB.height);
+		end.setBounds(endB.x, endB.y, endB.width, endB.height);
+		where.setBounds(whereB.x, whereB.y, whereB.width, whereB.height);
+		description.setBounds(descriptionB.x, descriptionB.y, descriptionB.width, descriptionB.height);
 		
 		if(p.upVote.contains(u.assets.myProfile)){
 			voteUp.setChecked(true);
@@ -103,18 +146,19 @@ public class PartyModule implements Comparable{
 		}
 		
 		shape.begin(ShapeType.Filled);
-		shape.setColor(u.assets.dark);
-		shape.rect(bounds.x,bounds.y,bounds.width,bounds.height);
+		shape.setColor(u.assets.darkL);
+		shape.rect(bounds.x,bounds.y+.05f*bounds.height,bounds.width,.95f*bounds.height);
 		shape.setColor(Color.BLACK);
-		shape.rect(bounds.x,bounds.y,bounds.width,.05f*bounds.height);
+		shape.rect(bounds.x,bounds.y+.03f*bounds.height,bounds.width,.02f*bounds.height);
 		//shape.rect(bounds.x,bounds.y+.95f*bounds.height,bounds.width,.05f*bounds.height);
 		shape.end();
 		
 		pic.begin();
+		/*
 		u.assets.medium.setColor(u.assets.orange);
 		u.assets.medium.draw(pic, p.name, bounds.x+.05f*bounds.width, bounds.y+.95f*bounds.height);
 		u.assets.small.setColor(Color.WHITE);
-		u.assets.small.draw(pic, "Time: "+p.d.toString(), bounds.x+.05f*bounds.width, bounds.y+.8f*bounds.height);
+		u.assets.small.draw(pic, "Time: "+p.startD.toString(), bounds.x+.05f*bounds.width, bounds.y+.8f*bounds.height);
 		if(p.description.length()>35){
 		u.assets.small.draw(pic, "Description: "+p.description.substring(0,35), bounds.x+.05f*bounds.width, bounds.y+.6f*bounds.height);
 		u.assets.small.draw(pic, p.description.substring(35,p.description.length()>70?70:p.description.length()), bounds.x+.055f*bounds.width, locationEnabled?bounds.y+.54f*bounds.height:bounds.y+.39f*bounds.height);
@@ -129,13 +173,23 @@ public class PartyModule implements Comparable{
 			}
 			}
 			}
-		layout.setText(u.assets.medium, ""+p.vote);
-		u.assets.medium.setColor(u.assets.orange);
-		u.assets.medium.draw(pic, ""+p.vote, .9f*w-layout.width/2, bounds.y+19*bounds.height/32+layout.height/2);
+		
+		*/
+		try{
 		voteUp.draw(pic, 1);
 		voteDown.draw(pic, 1);
 		report.draw(pic, 1);
-		
+		title.draw(pic, 1);
+		start.draw(pic, 1);
+		end.draw(pic, 1);
+		where.draw(pic, 1);
+		description.draw(pic, 1);
+		layout.setText(u.assets.medium, ""+p.vote);
+		u.assets.medium.setColor(u.assets.orange);
+		u.assets.medium.draw(pic, ""+p.vote, .9f*w-layout.width/2, bounds.y+19*bounds.height/32+layout.height/2);
+		}catch(Exception e){
+			
+		}
 		pic.end();
 	}
 	
@@ -162,8 +216,8 @@ public class PartyModule implements Comparable{
 		else if(Intersector.overlaps(touch, voteDownB)){u.send(new VoteDown(p,u.assets.myProfile));}
 		else if(Intersector.overlaps(touch, reportB)){report.toggle();u.reportConfirm(this);}
 		else{
-			//u.assets.toolBar.backEnabled=true;
-			//u.setScreen(new PartyViewScreen(u,p));
+			u.assets.toolBar.backEnabled=true;
+			u.setScreen(new PartyViewScreen(u,p));
 			
 		}
 		return true;
@@ -177,8 +231,8 @@ public class PartyModule implements Comparable{
 	@Override
 	public int compareTo(Object o) {
 		PartyModule comp = (PartyModule) o;
-		if(comp.p.d.getTime()>p.d.getTime()){return -1;}
-		else if(comp.p.d.getTime()>p.d.getTime()){return 1;}
+		if(comp.p.startD.getTime()>p.startD.getTime()){return -1;}
+		else if(comp.p.startD.getTime()>p.startD.getTime()){return 1;}
 		else{
 			return 0;
 		}
