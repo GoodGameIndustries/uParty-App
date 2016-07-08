@@ -123,7 +123,7 @@ public class PartyModule implements Comparable{
 		
 		titleB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.85f*bounds.height,.5f*bounds.width,.1f*bounds.height);
 		startB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.78f*bounds.height,.5f*bounds.width,.05f*bounds.height);
-		endB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.71f*bounds.height,.5f*bounds.width,.05f*bounds.height);
+		endB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.7f*bounds.height,.5f*bounds.width,.05f*bounds.height);
 		descriptionB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.42f*bounds.height,.5f*bounds.width,.2f*bounds.height);
 		whereB = new Rectangle(bounds.x+.03f*bounds.width,bounds.y+.13f*bounds.height,.5f*bounds.width,.2f*bounds.height);
 		voteUpB = new Rectangle(bounds.x+.85f*bounds.width,bounds.y+.675f*bounds.height,.1f*bounds.width,.35f*bounds.height);

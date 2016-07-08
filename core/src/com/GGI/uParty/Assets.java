@@ -60,7 +60,7 @@ public class Assets {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		
-		parameter.size = (int) (h/65);
+		parameter.size = (int) (h/63);
 		small = generator.generateFont(parameter); 
 		
 		parameter.size = (int) (h/40);

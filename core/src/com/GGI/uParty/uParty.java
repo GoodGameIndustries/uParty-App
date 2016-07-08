@@ -31,7 +31,7 @@ import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 public class uParty extends Game {
 	public Assets assets;
 	private Client client;
-	private boolean debug = true;
+	private boolean debug = false;
 	public Adapter adapter;
 	public String version = "1.0.8";
 	public boolean updateReq = false;
